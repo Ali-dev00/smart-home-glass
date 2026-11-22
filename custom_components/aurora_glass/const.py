@@ -16,9 +16,9 @@ CONF_ROOMS = "rooms"
 CONF_DEVICES = "devices"
 CONF_SCENES = "scenes"
 
-DEFAULT_NAME = "Aurora"
+DEFAULT_NAME = "Baizaman"
 DEFAULT_ICON = "mdi:home-heart"
-LANGUAGES = ["auto", "it", "en"]
+LANGUAGES = ["auto", "ru", "it", "en"]
 
 # immagini dei pulsanti luce disponibili nella libreria della scheda
 LIGHT_IMAGES = [

@@ -484,4 +484,4 @@ def build_card_config(conf: dict[str, Any], entry_id: str | None = None) -> dict
 
 
 def panel_title(conf: dict[str, Any]) -> tuple[str, str]:
-    return conf.get(CONF_NAME) or "Aurora", conf.get(CONF_ICON) or "mdi:home-heart"
+    return conf.get(CONF_NAME) or "Baizaman", conf.get(CONF_ICON) or "mdi:home-heart"

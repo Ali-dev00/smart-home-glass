@@ -231,13 +231,268 @@
     "Luminosità": "Brightness", "Effetti": "Effects", "Altre impostazioni": "More settings", "Calda": "Warm", "Naturale": "Neutral", "Fredda": "Cool",
     "Spenta: scegli un colore per accenderla": "Off: pick a colour to turn it on", "Colore impostato": "Colour set", "Bianco {n}": "White: {n}", "Luminosità {p}%": "Brightness {p}%", "Effetto: {n}": "Effect: {n}"
   };
-  var DICT = { en: EN };
+  /* nuove frasi della scheda Meteo (Open-Meteo), della scelta della città e del marchio Baizaman */
+  var EN_WX = {
+    "Meteo": "Weather", "oggi e i prossimi giorni": "today and the next days", "Dati non aggiornati": "Outdated data", "Aggiorna il meteo": "Refresh the weather", "Cambia città": "Change city",
+    "Carico il meteo…": "Loading the weather…", "Riprova": "Try again", "Dati:": "Data:", "Dati: servizio meteo di Home Assistant": "Data: Home Assistant weather service",
+    "Dopodomani": "Day after tomorrow", "giorno": "day", "notte": "night", "Percepita {t}°": "Feels like {t}°", "Umidità {p}%": "Humidity {p}%", "Vento {v} m/s": "Wind {v} m/s",
+    "Il servizio meteo non ha dato le previsioni.": "The weather service returned no forecast.",
+    "Le previsioni compaiono quando la plancia è collegata a Home Assistant.": "The forecast appears when the dashboard is connected to Home Assistant.",
+    "Non riesco a ottenere le previsioni. Controlla la connessione a internet di Home Assistant.": "Can't get the forecast. Check Home Assistant's internet connection.",
+    "Scrivi almeno due lettere": "Type at least two letters", "Cerco…": "Searching…", "Nessuna città trovata": "No city found", "Ricerca non riuscita: il servizio non risponde": "Search failed: the service is not responding",
+    "Salvo la città…": "Saving the city…", "Città del meteo: {n}": "Weather city: {n}", "Aggiornato alle {t}": "Updated at {t}", "Città del meteo": "Weather city", "previsioni Open-Meteo": "Open-Meteo forecast",
+    "Cerca una città": "Search for a city", "Cerca": "Search", "Basato su": "Based on", "Baizaman Smart Home · anteprima: non riflette dati reali di un impianto.": "Baizaman Smart Home · preview: not real data from a home.",
+    "Baizaman Smart Home · collegata a Home Assistant": "Baizaman Smart Home · connected to Home Assistant",
+    "Sereno": "Clear", "Prevalentemente sereno": "Mostly clear", "Parzialmente nuvoloso": "Partly cloudy", "Nuvoloso": "Overcast", "Nebbia con brina": "Freezing fog", "Pioviggine": "Drizzle",
+    "Pioviggine intensa": "Heavy drizzle", "Pioggia gelata": "Freezing rain", "Pioggia debole": "Light rain", "Pioggia forte": "Heavy rain", "Neve debole": "Light snow", "Neve forte": "Heavy snow",
+    "Granelli di neve": "Snow grains", "Rovesci": "Showers", "Rovesci violenti": "Violent showers", "Rovesci di neve": "Snow showers", "Temporale con grandine": "Thunderstorm with hail"
+  };
+  Object.keys(EN_WX).forEach(function (k) { EN[k] = EN_WX[k]; });
 
-  /* "auto" o vuoto: la lingua di Home Assistant (o del browser); tutto ciò che non è italiano diventa inglese */
+  var RU = {
+    /* stanze e luci */
+    "Salotto": "Гостиная", "Ingresso": "Прихожая", "Corridoio": "Коридор", "Cucina": "Кухня", "Balcone": "Балкон", "Camera": "Спальня", "Cameretta": "Детская",
+    "Bagno piccolo": "Санузел", "Bagno doccia": "Ванная", "Lavanderia": "Прачечная", "Sgabuzzino": "Кладовая",
+    "Zona giorno": "Дневная зона", "Zona notte": "Спальная зона", "Bagni": "Санузлы", "Servizi": "Хозяйственные", "Stanza": "Комната",
+    "Porta ingresso": "Входная дверь", "Balcone salotto": "Балкон гостиной", "Balcone cucina": "Балкон кухни", "Finestra cameretta": "Окно детской",
+    "Balcone camera": "Балкон спальни", "Finestra bagno": "Окно ванной", "Finestra lavanderia": "Окно прачечной", "Serratura": "Замок",
+    "Aperta": "Открыта", "Chiusa": "Закрыта", "Aperto": "Открыто", "Chiuso": "Закрыто", "Sbloccata": "Разблокирован", "Bloccata": "Заблокирован",
+    /* libreria immagini */
+    "Luci": "Свет", "Scene": "Сцены", "Sensori": "Датчики", "Allarme": "Охрана", "Clima": "Климат",
+    "Bagno 1": "Санузел 1", "Doccia": "Душ", "Notte": "Ночь", "Esco": "Ухожу", "Movimento": "Движение", "Porta": "Дверь", "Finestra": "Окно",
+    "Cancello": "Ворота", "Off": "Выкл.", "Fuori": "Вне дома", "Scattato": "Тревога",
+    /* scene */
+    "Buongiorno": "Доброе утро", "Cucina, corridoio, bagno": "Кухня, коридор, санузел", "Buongiorno! Cucina, corridoio e bagno accesi.": "Доброе утро! Кухня, коридор и санузел включены.",
+    "Cinema": "Кино", "Solo il salotto": "Только гостиная", "Scena Cinema: solo il salotto resta acceso.": "Сцена «Кино»: свет остаётся только в гостиной.",
+    "Cena": "Ужин", "Cucina e salotto": "Кухня и гостиная", "Scena Cena: cucina e salotto accesi.": "Сцена «Ужин»: кухня и гостиная включены.",
+    "Buonanotte": "Спокойной ночи", "Spegne tutto · allarme notte": "Всё выключить · ночная охрана", "Buonanotte! Luci spente, allarme in modalità notte.": "Спокойной ночи! Свет выключен, охрана в ночном режиме.",
+    "Esco di casa": "Ухожу из дома", "Spegne tutto · allarme fuori": "Всё выключить · охрана «вне дома»", "Casa chiusa: luci spente, allarme inserito.": "Дом закрыт: свет выключен, охрана включена.",
+    "Spegne tutte le luci": "Выключает весь свет", "Luci spente.": "Свет выключен.", "Scena {n}: luci impostate.": "Сцена «{n}»: свет настроен.", "Scena {n} avviata.": "Сцена «{n}» запущена.",
+    "Scena {n}": "Сцена «{n}»", "Scena {n}: invio i comandi…": "Сцена «{n}»: отправляю команды…",
+    "{n} luce non ha risposto": "Не ответил светильников: {n}", "{n} luci non hanno risposto": "Не ответили светильники: {n}", "luci come previsto": "свет, как задумано",
+    "{n} non raggiungibile": "Недоступно: {n}", "{n} non raggiungibili": "Недоступны: {n}",
+    /* allarme */
+    "Disattivato": "Отключена", "Casa libera. Scegli una modalità per armare l'allarme.": "Дом свободен. Выберите режим, чтобы включить охрану.",
+    "Allarme off": "Охрана выкл.", "Armato · Notte": "Включена · Ночь", "Porte e finestre sorvegliate. Il movimento interno viene ignorato.": "Двери и окна под охраной. Движение внутри игнорируется.",
+    "Allarme notte": "Ночная охрана", "Armato · Fuori casa": "Включена · Вне дома", "Tutta la casa è sorvegliata, compreso il movimento interno.": "Весь дом под охраной, включая движение внутри.",
+    "Allarme fuori casa": "Охрана «вне дома»", "Si sta armando…": "Включается…", "L'allarme si inserirà tra pochi secondi.": "Охрана включится через несколько секунд.",
+    "Allarme in inserimento": "Охрана включается", "ALLARME ATTIVO": "ТРЕВОГА", "L'allarme è scattato. Controlla le telecamere.": "Сработала сигнализация. Проверьте камеры.",
+    "allarme: serve il codice": "охрана: нужен код", "allarme non trovato": "охрана не найдена", "Centrale allarme non trovata": "Центральная панель охраны не найдена",
+    "Allarme: la centrale non ha eseguito il comando (codice errato o non disponibile)": "Охрана: панель не выполнила команду (неверный код или недоступна)",
+    "Serve il codice per: {m}": "Нужен код для: {m}", "Invio: {m}…": "Отправляю: {m}…", "Allarme attivo!": "Тревога!",
+    /* luci e sensori */
+    "Non riuscito: {e}": "Не удалось: {e}", "errore di Home Assistant": "ошибка Home Assistant",
+    "Movimento {n}": "Движение: {n}", "Luce {n}": "Свет: {n}", "Spenta": "Выключен", "Accesa": "Включён", "Accesa · {p}%": "Включён · {p}%",
+    "{n}: dispositivo non disponibile": "{n}: устройство недоступно", "{n}: non risponde, non so se il comando è arrivato": "{n}: не отвечает, неизвестно, дошла ли команда",
+    "{n}: il comando non ha avuto effetto": "{n}: команда не подействовала",
+    "Nessun movimento": "Движения нет", "Non disponibile": "Недоступно", "Movimento!": "Движение!", "Movimento: {n}": "Движение: {n}", "Casa tranquilla": "В доме тихо",
+    "{n} luce accesa": "Включено: {n}", "{n} luci accese": "Включено: {n}", "Nessuna luce accesa": "Свет не горит", "Tutte le luci spente": "Весь свет выключен",
+    "{n} non risponde": "Не отвечает: {n}", "{n} non rispondono": "Не отвечают: {n}",
+    "{n} sensore offline": "Датчиков не в сети: {n}", "{n} sensori offline": "Датчиков не в сети: {n}", "Nessuna aperta": "Всё закрыто", "Tutto chiuso": "Всё закрыто",
+    "{n} apertura attiva": "Открыто: {n}", "{n} aperture attive": "Открыто: {n}",
+    "adesso": "только что", "{n} s fa": "{n} с назад", "{n} min fa": "{n} мин назад", "{n} h fa": "{n} ч назад", "{n} g fa": "{n} дн. назад", "mai": "никогда",
+    "Luci accese": "Включённый свет", "Tocca una luce per spegnerla": "Нажмите на светильник, чтобы выключить", "Tutte le luci sono spente": "Весь свет выключен", "Spegni tutte": "Выключить всё", "Spegni {n}": "Выключить: {n}", "{n}: spenta": "{n}: выключен",
+    "Allarme: {s}": "Охрана: {s}", "Sensori di movimento": "Датчики движения", "Nessun movimento adesso": "Сейчас движения нет", "Movimento in {n} stanza": "Движение в комнатах: {n}", "Movimento in {n} stanze": "Движение в комнатах: {n}",
+    "Movimento adesso": "Движение сейчас", "Ultimo movimento {t}": "Последнее движение: {t}", "Apri Sicurezza": "Открыть «Безопасность»", "Nessun movimento registrato": "Движение ещё не зафиксировано", "Ultimo movimento: {n}": "Последнее движение: {n}",
+    "Nessuna luce trovata: controlla le entità nella configurazione": "Свет не найден: проверьте сущности в настройках",
+    "Spengo {n} luci…": "Выключаю светильников: {n}…", "{n} luce è ancora accesa": "Всё ещё горит: {n}", "{n} luci sono ancora accese": "Всё ещё горит: {n}",
+    "{n} luce non risponde: non so se sia spenta": "Не отвечает: {n}. Неизвестно, выключен ли", "{n} luci non rispondono: non so se siano spente": "Не отвечают: {n}. Неизвестно, выключены ли",
+    "n.d.": "н/д", "Sensore di temperatura non disponibile": "Датчик температуры недоступен", "Sensori di movimento offline": "Датчики движения не в сети",
+    "Nessun sensore di movimento risponde": "Ни один датчик движения не отвечает", "Nessun movimento recente": "Недавнего движения нет",
+    /* mondo, ora, effetti */
+    "Mondo: {n}": "Мир: {n}", "Buon pomeriggio": "Добрый день", "Buonasera": "Добрый вечер", "Ora reale ripristinata": "Возвращено реальное время",
+    "Nessuno": "Нет", "Il mondo cambierà ogni 30 secondi": "Мир будет меняться каждые 30 секунд",
+    "Casetta": "Домик", "Sole, luna, nuvole e la tua casetta con le finestre che si accendono": "Солнце, луна, облака и ваш домик с загорающимися окнами",
+    "Città": "Город", "Grattacieli con finestre che si accendono, auto, aereo e insegne al neon": "Небоскрёбы с загорающимися окнами, машины, самолёт и неоновые вывески",
+    "Montagna": "Горы", "Cime innevate, funivia, baita, aurora boreale e neve che cade": "Заснеженные вершины, канатная дорога, шале, северное сияние и падающий снег",
+    "Mare e faro": "Море и маяк", "Onde che scorrono, barca a vela, gabbiani, delfino e un faro che gira": "Бегущие волны, парусник, чайки, дельфин и вращающийся маяк",
+    "Foresta magica": "Волшебный лес", "Raggi di sole di giorno, lucciole, funghi luminosi e un gufo di notte": "Солнечные лучи днём, светлячки, светящиеся грибы и сова ночью",
+    "Spazio": "Космос", "Nebulose, pianeta con anelli, astronauta che fluttua, stelle cadenti, satellite e UFO": "Туманности, планета с кольцами, парящий астронавт, падающие звёзды, спутник и НЛО",
+    "Giappone": "Япония", "Monte Fuji, torii, pagoda, ciliegio con petali che cadono e lanterne": "Гора Фудзи, тории, пагода, сакура с падающими лепестками и фонари",
+    "Cyberpunk": "Киберпанк", "Metropoli al neon sotto la pioggia: insegne che sfarfallano, auto volanti, ologramma": "Неоновый мегаполис под дождём: мерцающие вывески, летающие машины, голограмма",
+    "Natale": "Новый год", "Casa innevata con luci colorate, albero, pupazzo di neve e la slitta di Babbo Natale": "Заснеженный дом с цветными огнями, ёлка, снеговик и сани Деда Мороза",
+    "Oceano": "Океан", "Sott'acqua: banchi di pesci, meduse luminose, balena, sottomarino, alghe e bolle": "Под водой: косяки рыб, светящиеся медузы, кит, подлодка, водоросли и пузырьки",
+    "Pioggia": "Дождь", "Temporale": "Гроза", "Neve": "Снег", "Nebbia": "Туман", "Foglie d'autunno": "Осенние листья", "Petali": "Лепестки", "Lucciole": "Светлячки",
+    "Stelle cadenti": "Падающие звёзды", "Fuochi d'artificio": "Фейерверк", "Bolle": "Пузыри", "Coriandoli": "Конфетти",
+    /* editor immagini */
+    "Immagine troppo grande: non riesco a salvarla": "Изображение слишком большое: сохранить не удалось",
+    "Modifica immagine": "Изменить изображение", "Un'immagine da spento (PNG) e una da acceso (meglio una GIF animata)": "Одно изображение для выключенного состояния (PNG) и одно для включённого (лучше анимированный GIF)",
+    "L'immagine mostrata per questo stato": "Изображение для этого состояния", "Clic o trascina un file": "Нажмите или перетащите файл", "Spento": "Выключено", "Acceso": "Включено", "Immagine": "Изображение",
+    "Scegli un file immagine (PNG, JPG, GIF, WebP)": "Выберите файл изображения (PNG, JPG, GIF, WebP)", "File troppo pesante (massimo 3 MB)": "Файл слишком большой (максимум 3 МБ)",
+    "Immagine aggiornata": "Изображение обновлено", "Immagine «{n}» applicata": "Изображение «{n}» применено", "Immagine originale ripristinata": "Исходное изображение восстановлено",
+    /* telecamere */
+    "oggi": "сегодня", "Immagine caricata alle {t}": "Изображение загружено в {t}", "Telecamera offline": "Камера не в сети",
+    "HA non la raggiunge in questo momento": "Home Assistant сейчас не может до неё достучаться", "Anteprima non disponibile": "Предпросмотр недоступен", "tocca per aprire la telecamera": "нажмите, чтобы открыть камеру",
+    "Diretta non disponibile": "Прямой эфир недоступен", "Stop": "Стоп", "Diretta": "Эфир", "Aggiorna anteprima": "Обновить предпросмотр", "Apri": "Открыть",
+    /* clima */
+    "Auto": "Авто", "Freddo": "Холод", "Deumidifica": "Осушение", "Ventola": "Вентилятор", "Caldo": "Тепло", "Raffrescamento": "Охлаждение", "Riscaldamento": "Обогрев",
+    "Deumidificazione": "Осушение", "Solo ventola": "Только вентилятор", "Automatico": "Автоматически", "Aria salone": "Кондиционер", "in pausa": "ожидание", "In casa {t} °C": "В доме {t} °C",
+    "Il climatizzatore non risponde: controlla la sua integrazione in Home Assistant.": "Кондиционер не отвечает: проверьте его интеграцию в Home Assistant.",
+    "Acceso ma in pausa: in casa ci sono {c}° e hai impostato {t}°. Abbassa la temperatura per far partire il raffrescamento.": "Включён, но ждёт: в доме {c}°, а вы задали {t}°. Понизьте температуру, чтобы началось охлаждение.",
+    "Acceso ma in pausa: in casa ci sono {c}° e hai impostato {t}°. Alza la temperatura per far partire il riscaldamento.": "Включён, но ждёт: в доме {c}°, а вы задали {t}°. Повысьте температуру, чтобы начался обогрев.",
+    "Clima: {m}": "Климат: {m}", "a {t}° (in casa {c}°)": "на {t}° (в доме {c}°)", "Clima: comando «{m}» a {t}° inviato": "Климат: команда «{m}» на {t}° отправлена",
+    "Clima: comando «{m}» inviato": "Климат: команда «{m}» отправлена", "Climatizzatore non raggiungibile: nessun comando inviato": "Кондиционер недоступен: команда не отправлена",
+    /* energia */
+    "in tempo reale": "в реальном времени", "aggiornata ora": "обновлено только что", "aggiornata {n} s fa": "обновлено {n} с назад",
+    "Lavatrice": "Стиральная машина", "Asciugatrice": "Сушильная машина", "Lavastoviglie": "Посудомоечная машина", "Forno": "Духовка", "Multipresa": "Удлинитель", "Frigorifero": "Холодильник",
+    "Dato non disponibile": "Данные недоступны", "Solo consumo di fondo": "Только фоновое потребление", "Consumo basso": "Низкое потребление", "Consumo nella norma": "Потребление в норме",
+    "Consumo alto": "Высокое потребление", "Attenzione: vicino al limite": "Внимание: близко к лимиту",
+    "Misura generale della casa · limite di avviso {l}": "Общий счётчик дома · порог предупреждения {l}", "Tocca per cambiare la tariffa": "Нажмите, чтобы изменить тариф",
+    "Costa adesso": "Стоит сейчас", "Fondo": "Фон", "Media 3 h": "Среднее за 3 ч", "Tensione": "Напряжение",
+    "Tariffa {p}": "Тариф {p}", "Tariffa non impostata": "Тариф не задан", "Tariffa di esempio {p}": "Пример тарифа {p}",
+    "Salvata in Home Assistant · ogni costo è kWh × tariffa": "Сохранён в Home Assistant · стоимость = кВт·ч × тариф",
+    "Salvata su questo dispositivo · ogni costo è kWh × tariffa": "Сохранён на этом устройстве · стоимость = кВт·ч × тариф",
+    "I costi arrivano dai tuoi sensori (≈ {p}). Imposta la tariffa della bolletta per i costi reali": "Стоимость считают ваши датчики (≈ {p}). Задайте тариф из счёта, чтобы видеть реальные суммы",
+    "Imposta il prezzo della tua bolletta per vedere i costi reali": "Задайте цену из своего счёта, чтобы видеть реальную стоимость", "Modifica": "Изменить", "Imposta": "Задать",
+    "Oggi": "Сегодня", "Ieri": "Вчера", "Questo mese": "Этот месяц", "Stima fine mese ≈ {n} kWh": "Прогноз на конец месяца ≈ {n} кВт·ч", "Mese scorso": "Прошлый месяц", "Quest'anno": "Этот год",
+    "Altro (luci, standby…)": "Прочее (свет, режим ожидания…)", "Nessun elettrodomestico acceso": "Бытовая техника не работает", "{n} kWh oggi": "{n} кВт·ч сегодня",
+    "Costo reale:": "Реальная стоимость:", "Usa questo": "Использовать", "I sensori che avevi già calcolano i costi a circa": "Ваши датчики считают стоимость примерно по",
+    "Anteprima: la tariffa resta salvata solo in questo browser.": "Предпросмотр: тариф сохраняется только в этом браузере.",
+    "Viene salvata in Home Assistant ({id}): vale su tutti i tuoi dispositivi.": "Сохраняется в Home Assistant ({id}): действует на всех ваших устройствах.",
+    "Al primo salvataggio creo in Home Assistant l'helper {id} (serve un utente amministratore); altrimenti resta su questo dispositivo.": "При первом сохранении в Home Assistant создаётся помощник {id} (нужен администратор); иначе тариф остаётся на этом устройстве.",
+    "Inserisci un prezzo tra {a} e {b}": "Введите цену от {a} до {b}", "Tariffa salvata: {p}": "Тариф сохранён: {p}", "Tariffa salvata su questo dispositivo": "Тариф сохранён на этом устройстве",
+    "Tariffa salvata in Home Assistant: {p}": "Тариф сохранён в Home Assistant: {p}", "serve un utente amministratore per salvarla in HA": "для сохранения в HA нужен администратор",
+    "non sono riuscito a scriverla in HA": "не удалось записать в HA", "Picco": "Пик", "alle": "в", "Media": "Среднее", "Linea tratteggiata = consumo di fondo": "Пунктир = фоновое потребление",
+    "Costo giornaliero": "Стоимость за день", "Consumo giornaliero": "Потребление за день", "Storico non disponibile": "История недоступна", "Totale": "Итого", "Media al giorno": "В среднем в день",
+    "Calcolato con {p}": "Рассчитано по {p}", "Baizaman Smart Home · collegata a Home Assistant": "Baizaman Smart Home · подключено к Home Assistant",
+    /* testi fissi della pagina */
+    "Stile": "Стиль", "Cambia tema chiaro/scuro": "Переключить светлую/тёмную тему", "Modalità modifica: tocca un pulsante per cambiargli immagine o GIF": "Режим правки: нажмите на кнопку, чтобы сменить её изображение или GIF",
+    "Fine": "Готово", "Tocca scene e luci": "Нажимайте на сцены и свет", "Cambia mondo, effetti e ora": "Меняйте мир, эффекты и время", "Modifica le immagini": "Изменить изображения",
+    "Simula intrusione": "Имитировать вторжение", "Casa": "Дом", "Esterno": "На улице",
+    "Apri i consumi": "Открыть потребление", "Consumo": "Потребление", "Aggiornamento in tempo reale": "Обновление в реальном времени", "Scene rapide": "Быстрые сцены", "un tocco, tutta la casa": "одно касание — весь дом",
+    "Luci e stanze": "Свет и комнаты", "tocca l'immagine per accendere": "нажмите на картинку, чтобы включить", "tocca per accendere, tieni premuto per la luminosità": "нажмите, чтобы включить; удерживайте для яркости", "In casa 23 °C": "В доме 23 °C", "Temperatura desiderata": "Заданная температура",
+    "Abbassa": "Меньше", "Alza": "Больше", "Modalità": "Режим", "Alette verticali": "Вертикальные жалюзи", "Alette orizzontali": "Горизонтальные жалюзи", "Preset": "Пресет",
+    "Sicurezza": "Безопасность", "ALLARME — movimento rilevato in Ingresso": "ТРЕВОГА — движение в прихожей", "Disattiva": "Отключить", "Centrale allarme": "Панель охраны",
+    "Casa libera.": "Дом свободен.", "Modalità allarme": "Режим охраны", "Fuori casa": "Вне дома", "Porte, finestre e cancello": "Двери, окна и ворота", "LIVE": "LIVE",
+    "Giardino": "Сад", "Energia": "Энергия", "Potenza adesso": "Мощность сейчас", "Misura generale della casa": "Общий счётчик дома", "Andamento": "Динамика", "Periodo": "Период",
+    "3 ore": "3 часа", "24 ore": "24 часа", "7 giorni": "7 дней", "Imposta la tariffa dell'energia": "Задайте тариф на энергию", "Tariffa": "Тариф", "ultimi 14 giorni": "последние 14 дней",
+    "Unità": "Единица", "kWh": "кВт·ч", "Elettrodomestici": "Бытовая техника", "consumo adesso e oggi": "потребление сейчас и сегодня",
+    "Navigazione": "Навигация", "Spegni tutto": "Выключить всё", "Personalizza lo stile": "Настройка стиля", "Chiudi": "Закрыть", "Mondo": "Мир",
+    "10 paesaggi animati, tutti con alba, giorno, tramonto e notte": "10 анимированных пейзажей: рассвет, день, закат и ночь",
+    "Ora del giorno": "Время суток", "simula cielo e colori": "имитация неба и цветов", "Simula l'ora del giorno": "Имитировать время суток", "Usa l'ora reale": "Использовать реальное время",
+    "Meteo ed effetti": "Погода и эффекты", "si sovrappongono a qualsiasi mondo": "накладываются на любой мир", "Anche sullo sfondo della pagina": "Также на фоне страницы",
+    "Particelle dietro a tutte le card": "Частицы позади всех карточек", "Effetto su tutta la pagina": "Эффект на всей странице", "Sorpresa": "Сюрприз",
+    "Cambia mondo ogni 30 secondi": "Менять мир каждые 30 секунд", "Una playlist di paesaggi": "Плейлист из пейзажей", "Cambia mondo automaticamente": "Менять мир автоматически",
+    "Pulsanti": "Кнопки", "Immagini e GIF": "Картинки и GIF", "Compatti": "Компактные", "Modifica le immagini dei pulsanti": "Изменить изображения кнопок", "Ripristina tutto": "Сбросить всё",
+    "Libreria": "Библиотека", "Puoi anche trascinare un file (PNG, JPG, GIF animata, WebP) sopra un riquadro. Le immagini scelte restano salvate in questo browser.": "Файл (PNG, JPG, анимированный GIF, WebP) можно перетащить на любое поле. Выбранные изображения сохраняются в этом браузере.",
+    "Ripristina originale": "Вернуть оригинал", "Fatto": "Готово", "Inserisci il codice": "Введите код", "Codice allarme": "Код охраны", "Annulla": "Отмена", "Conferma": "Подтвердить",
+    "Costo dell'energia": "Стоимость энергии", "Quanto paghi un kWh in bolletta": "Сколько вы платите за кВт·ч по счёту", "Diminuisci": "Уменьшить", "Prezzo in euro per kWh": "Цена за кВт·ч",
+    "€ / kWh": "€ / кВт·ч", "Aumenta": "Увеличить", "Non lo so: calcolalo dalla bolletta": "Не знаю: рассчитать по счёту", "Totale da pagare": "Всего к оплате", "es. 84,50": "напр. 84,50",
+    "kWh consumati": "Потреблено кВт·ч", "es. 210": "напр. 210",
+    "Dividere il totale per i kWh include anche quota fissa, trasporto e imposte: è il costo reale di ogni kWh che consumi.": "Если разделить сумму на кВт·ч, учитываются и фиксированная плата, доставка и налоги: это реальная цена каждого кВт·ч.",
+    "Salva tariffa": "Сохранить тариф",
+    /* clima: più climatizzatori */
+    "Climatizzatori": "Кондиционеры", "infrarossi": "инфракрасный", "{n} climatizzatori": "Кондиционеров: {n}", "Ultimo comando: {m}": "Последняя команда: {m}",
+    "ultimo comando": "последняя команда", "{n}: {t} °C": "{n}: {t} °C",
+    "Comandato a infrarossi: Home Assistant ricorda l'ultimo comando inviato, ma non sa se il climatizzatore è davvero acceso. Se lo spegni col telecomando, qui lo stato resta quello di prima.": "Управление по инфракрасному каналу: Home Assistant помнит последнюю отправленную команду, но не знает, включён ли кондиционер на самом деле. Если выключить его пультом, здесь состояние не изменится.",
+    /* stanze e dispositivi */
+    "Stanze e dispositivi": "Комнаты и устройства", "Cosa mostra la plancia: vale su tutti i tablet e i telefoni": "Что показывает панель: действует на всех планшетах и телефонах",
+    "stanze, luci, sensori, clima ed energia": "комнаты, свет, датчики, климат и энергия", "Sezioni": "Разделы", "Salva": "Сохранить", "Scegli": "Выбрать",
+    "Cerca per nome, stanza o entità": "Поиск по имени, комнате или сущности", "Stanze": "Комнаты", "Porte e finestre": "Двери и окна", "Temperatura": "Температура",
+    "anche i relè e le prese che accendono una lampada": "также реле и розетки, включающие лампу", "anche le serrature": "также замки",
+    "non trovata": "не найдена", "non disponibile": "недоступно", "acceso": "включено", "spento": "выключено", "aperta": "открыта", "chiusa": "закрыта", "bloccata": "заблокирован",
+    "sbloccata": "разблокирован", "disattivato": "отключена", "pronta": "готово",
+    "Sembra un elettrodomestico o una presa, non una luce": "Похоже на бытовой прибор или розетку, а не на светильник", "Togli {n}": "Убрать: {n}", "Aggiungi": "Добавить",
+    "questa parte della plancia non compare": "эта часть панели не отображается", "Cambia": "Изменить", "Togli": "Убрать",
+    "infrarossi: stato presunto": "инфракрасный: предполагаемое состояние", "si apre con questo": "открывается первым", "Sposta su": "Выше", "Sposta giù": "Ниже",
+    "Nessuno: questa parte della plancia non compare": "Нет: эта часть панели не отображается", "{n} luce": "Светильников: {n}", "{n} luci": "Светильников: {n}",
+    "{n} sensore di movimento": "Датчиков движения: {n}", "{n} sensori di movimento": "Датчиков движения: {n}", "{n} porta o finestra": "Дверей и окон: {n}",
+    "{n} porte e finestre": "Дверей и окон: {n}", "temperatura": "температура",
+    "Tocca una stanza per cambiare nome, immagine, luci e sensori. L'ordine qui è l'ordine nella plancia.": "Нажмите на комнату, чтобы изменить имя, изображение, свет и датчики. Порядок здесь — это порядок на панели.",
+    "Senza nome": "Без названия", "da controllare": "нужно проверить", "Elimina la stanza": "Удалить комнату", "Nome": "Название", "area di Home Assistant: {n}": "зона Home Assistant: {n}",
+    "{n}: sembrano elettrodomestici o prese, non luci. Se è così toglili con la ×: compariranno tra gli elettrodomestici se aggiungi il loro sensore di potenza in Energia.": "{n}: похоже на бытовые приборы или розетки, а не на свет. Если так, уберите их крестиком ×: они появятся среди бытовой техники, если добавить их датчик мощности в разделе «Энергия».",
+    "Aggiungi una stanza": "Добавить комнату", "Con due o più climatizzatori nella plancia compare una riga per passare dall'uno all'altro.": "Если на панели два и более кондиционера, появляется строка для переключения между ними.",
+    "Aggiungi un climatizzatore": "Добавить кондиционер",
+    "Quelli a infrarossi (SwitchBot, Broadlink…) non dicono a Home Assistant se sono accesi: la plancia mostra l’ultimo comando inviato. Se lo stesso climatizzatore ha anche un’integrazione vera (Panasonic, Daikin, LG…), scegli quella.": "Инфракрасные (SwitchBot, Broadlink…) не сообщают Home Assistant, включены ли они: панель показывает последнюю отправленную команду. Если у того же кондиционера есть настоящая интеграция (Panasonic, Daikin, LG…), выберите её.",
+    "Potenza di tutta la casa": "Мощность всего дома", "in W, attiva la vista Energia": "в Вт, включает раздел «Энергия»", "Contatore di tutta la casa": "Счётчик всего дома",
+    "in kWh, per oggi, mese, anno e storico": "в кВт·ч: за сегодня, месяц, год и история", "il sensore di potenza di ognuno: presa smart o relè": "датчик мощности каждого: умная розетка или реле",
+    "temperatura esterna in alto": "уличная температура вверху", "Telecamere": "Камеры",
+    "Cosa accende ogni scena: tutte le altre luci della plancia si spengono. Puoi scegliere anche una scena o uno script di Home Assistant. Una scena vuota non compare.": "Что включает каждая сцена: остальной свет на панели выключается. Можно выбрать и сцену или скрипт Home Assistant. Пустая сцена не отображается.",
+    "Buonanotte inserisce l'allarme notte": "«Спокойной ночи» включает ночную охрану", "Esco di casa inserisce l'allarme fuori casa": "«Ухожу из дома» включает охрану «вне дома»",
+    "Tocca ancora per eliminare": "Нажмите ещё раз, чтобы удалить", "Tocca ancora il cestino per eliminare «{n}»": "Нажмите на корзину ещё раз, чтобы удалить «{n}»", "Nuova stanza": "Новая комната",
+    "Tocca per aggiungere o togliere, poi Fatto": "Нажимайте, чтобы добавить или убрать, затем «Готово»", "Tocca quello giusto": "Выберите нужный", "già in {n}": "уже в «{n}»",
+    "Ce ne sono altre: scrivi qualcosa per cercarle": "Есть и другие: введите текст для поиска", "Nessuna entità trovata": "Сущности не найдены", "{n} scelta": "Выбрано: {n}", "{n} scelte": "Выбрано: {n}",
+    "Scarta le modifiche?": "Отменить изменения?", "Hai modifiche non salvate: tocca di nuovo per scartarle": "Есть несохранённые изменения: нажмите ещё раз, чтобы отменить",
+    "Dai un nome a ogni stanza": "Дайте название каждой комнате", "Salvato: la plancia si aggiorna su tutti i dispositivi": "Сохранено: панель обновится на всех устройствах",
+    "Non salvato: {e}": "Не сохранено: {e}", "Non riesco a leggere la configurazione: {e}": "Не удаётся прочитать настройки: {e}", "Stanze e dispositivi salvati": "Комнаты и устройства сохранены",
+    "{n}: sembra un elettrodomestico o una presa, non una luce. Se è così toglilo con la ×: comparirà tra gli elettrodomestici se aggiungi il suo sensore di potenza in Energia.": "{n}: похоже на бытовой прибор или розетку, а не на свет. Если так, уберите его крестиком ×: он появится среди бытовой техники, если добавить его датчик мощности в разделе «Энергия».",
+    "freddo": "охлаждение", "caldo": "обогрев", "deumidifica": "осушение", "ventola": "вентилятор", "automatico": "авто",
+    /* robot, giardino, meteo, server */
+    "Taglia": "Косить", "Taglia l'erba": "Косит траву", "In attesa": "Ожидание", "Robot di casa": "Роботы дома", "Zona {n}: elettrovalvola": "Зона {n}: электроклапан", "Zona {n}: umidità terreno": "Зона {n}: влажность почвы", "sensore in %": "датчик в %", "es. irrigazione prato": "напр. полив газона",
+    "Aggiungi tutti i robot che hai: aspirapolvere, lavapavimenti e tagliaerba. Con più di uno nella plancia compare una riga per passare dall'uno all'altro.": "Добавьте всех своих роботов: пылесос, моющий робот и газонокосилку. Если их больше одного, появляется строка для переключения.",
+    "Ogni zona è un'elettrovalvola (interruttore o valvola di Home Assistant) con, se vuoi, il sensore di umidità del terreno. Le zone senza elettrovalvola né sensore non compaiono. Il nome della zona è quello dell'elettrovalvola.": "Каждая зона — это электроклапан (переключатель или клапан Home Assistant) и, по желанию, датчик влажности почвы. Зоны без клапана и датчика не отображаются. Название зоны совпадает с названием клапана.",
+    "Robot Aspirapolvere": "Робот-пылесос", "In pulizia": "Уборка", "In carica": "Заряжается", "In pausa": "Пауза", "Alla base": "На базе", "Ritorno alla base": "Возвращается на базу", "Pulisci": "Убрать", "Base": "База", "Robot": "Робот",
+    "Giardino & Irrigazione": "Сад и полив", "Zone smart": "Умные зоны", "Umidità suolo": "Влажность почвы", "Inattivo": "Не активен", "Irrigazione attiva": "Полив идёт",
+    "Stazione Meteo": "Метеостанция", "Vento": "Ветер", "Pioggia oggi": "Дождь сегодня", "Indice UV": "УФ-индекс", "Pressione": "Давление", "Fulmini": "Молнии", "{n} colpi": "Ударов: {n}", "Ultimo fulmine a {d} km": "Последняя молния в {d} км", "Nessun fulmine recente": "Недавних молний нет",
+    "Infrastruttura & Gruppo di Continuità": "Инфраструктура и ИБП", "Server": "Сервер", "UPS": "ИБП", "Alimentazione da rete": "Питание от сети", "Alimentazione a batteria": "Питание от батареи", "Autonomia": "Автономность", "Carico": "Нагрузка",
+    "Sanificazione": "Санитарная обработка", "Sanificazione consigliata": "Рекомендована санитарная обработка", "{n} kWh questo mese": "{n} кВт·ч в этом месяце", "Sanificazione: {c}/{l}": "Санитарная обработка: {c}/{l}", "Cicli completati: {n}": "Завершено циклов: {n}",
+    "Luce": "Свет", "Sirena": "Сирена", "Icone MDI": "Иконки MDI", "Cronotermostato": "Программируемый термостат", "Termostato": "Термостат",
+    "Scena personalizzata": "Своя сцена", "Stile clima: {s}": "Стиль климата: {s}", "Modello robot impostato: {m}": "Модель робота: {m}", "Batteria": "Батарея",
+    "Rientro alla base": "Возврат на базу", "Errore": "Ошибка", "Rete Online": "Сеть в норме", "Su Batteria!": "Работа от батареи!", "Tocca per azzerare il contatore": "Нажмите, чтобы обнулить счётчик",
+    "ripristinato": "сброшено", "Server & UPS": "Сервер и ИБП", "Tipo / Modello di Robot": "Тип / модель робота", "es. vacuum.roborock_saros_10r": "напр. vacuum.roborock_saros_10r",
+    "Sensore Vento": "Датчик ветра", "velocità vento km/h": "скорость ветра, км/ч", "Sensore Pioggia": "Датчик дождя", "pioggia mm o mm/h": "дождь, мм или мм/ч", "indice raggi ultravioletti": "ультрафиолетовый индекс",
+    "Pressione atmosferica": "Атмосферное давление", "pressione in hPa": "давление в гПа", "Distanza fulmini": "Расстояние до молний", "km dal temporale": "км до грозы", "Scariche fulmini": "Разряды молний", "numero colpi rilevati": "число зафиксированных ударов",
+    "Monitoraggio hardware del server Home Assistant (Mini PC) e del gruppo di continuità (UPS tramite NUT).": "Мониторинг оборудования сервера Home Assistant (мини-ПК) и ИБП (через NUT).",
+    "Server Home Assistant (Mini PC)": "Сервер Home Assistant (мини-ПК)", "Utilizzo CPU": "Загрузка CPU", "percentuale %": "проценты %", "Memoria RAM": "Память RAM", "Temperatura CPU": "Температура CPU", "gradi °C": "градусы °C",
+    "Utilizzo Disco": "Использование диска", "Gruppo di Continuità (UPS NUT)": "ИБП (UPS NUT)", "Livello Batteria UPS": "Заряд батареи ИБП", "Carico UPS": "Нагрузка ИБП", "percentuale % o W": "проценты % или Вт",
+    "Autonomia Residua": "Оставшаяся автономность", "minuti rimanenti": "осталось минут", "Stato Linea UPS": "Состояние линии ИБП", "Online / Su batteria": "В сети / От батареи", "Volt V": "Вольты, В",
+    "Stile Clima & Riscaldamento": "Стиль климата и отопления", "Modello Robot": "Модель робота", "Tagliaerba": "Газонокосилка", "Pausa": "Пауза", "Domani": "Завтра", "Previsione meteo del giorno…": "Прогноз погоды на сегодня…",
+    "Apri dettagli stazione meteo": "Открыть данные метеостанции", "Comandi robot": "Управление роботом", "Avvia o riprendi pulizia": "Начать или продолжить уборку", "Metti in pausa": "Поставить на паузу", "Torna alla base di ricarica": "Вернуться на зарядную базу", "Carico W": "Нагрузка, Вт",
+    /* allarme e altre centrali */
+    "Armato · In casa": "Включена · Дома", "Porte e finestre sorvegliate mentre sei in casa.": "Двери и окна под охраной, пока вы дома.", "Allarme in casa": "Охрана «дома»",
+    "Armato · Vacanza": "Включена · Отпуск", "Tutta la casa è sorvegliata finché sei via.": "Весь дом под охраной, пока вас нет.", "Allarme vacanza": "Охрана «отпуск»",
+    "Armato · Personalizzato": "Включена · Своя", "Armato con le zone escluse che hai scelto.": "Включена; выбранные вами зоны исключены.", "Allarme personalizzato": "Своя охрана",
+    "In casa": "Дома", "Vacanza": "Отпуск", "Standby": "Ожидание", "Telecamere giardino": "Камеры в саду", "Modalità telecamere e altre centrali": "Режимы камер и другие панели охраны",
+    "i tasti seguono le modalità che la centrale sa fare: In casa, Notte, Fuori casa": "кнопки повторяют режимы, которые умеет панель: Дома, Ночь, Вне дома",
+    "es. Arlo, Blink: Fuori casa, In casa, Standby": "напр. Arlo, Blink: Вне дома, Дома, Ожидание",
+    /* telecamere */
+    "Faretto": "Прожектор", "Faretto acceso": "Прожектор включён", "Faretto spento": "Прожектор выключен", "Foto": "Фото", "Salva una foto": "Сохранить фото", "Batteria {p}": "Батарея {p}",
+    "Tocca ancora Sirena per farla suonare": "Нажмите «Сирена» ещё раз, чтобы включить звук", "Nessuna immagine da salvare": "Нет изображения для сохранения", "Foto scaricata": "Фото скачано", "Scatto la foto…": "Делаю снимок…",
+    "Foto salvata in Media › aurora_glass": "Фото сохранено в Media › aurora_glass", "Foto salvata in Media › {f}": "Фото сохранено в Media › {f}", "Foto non salvata ({e}): la scarico dall'anteprima": "Фото не сохранено ({e}): скачиваю из предпросмотра",
+    "Faretto, sirena e batteria di ogni telecamera vengono trovati da soli tra le entità dello stesso dispositivo. Il tasto Foto salva l'immagine in Media › aurora_glass.": "Прожектор, сирена и батарея каждой камеры находятся автоматически среди сущностей того же устройства. Кнопка «Фото» сохраняет изображение в Media › aurora_glass.",
+    /* irrigazione */
+    "Zona": "Зона", "Zona Prato": "Зона газона", "Zona Siepe": "Зона живой изгороди", "Irriga": "Полить", "Ferma l'irrigazione": "Остановить полив", "In irrigazione": "Идёт полив", "In irrigazione · {t}": "Идёт полив · {t}",
+    "Irrigazione spenta": "Полив остановлен", "Durata": "Длительность", "{n} min": "{n} мин", "Durata dell'irrigazione in minuti": "Длительность полива в минутах", "Umidità terreno": "Влажность почвы",
+    "Irrigazione avviata: si ferma alle {t}": "Полив запущен: остановится в {t}", "Irrigazione avviata: si ferma da sola alle {t}": "Полив запущен: сам остановится в {t}",
+    "Irrigazione avviata: si ferma alle {t} se la plancia resta aperta": "Полив запущен: остановится в {t}, если панель останется открытой",
+    "Nella plancia ogni zona ha un cursore con la durata: Home Assistant chiude l'elettrovalvola da solo allo scadere, anche con la plancia chiusa.": "У каждой зоны на панели есть ползунок длительности: Home Assistant сам закроет клапан по истечении времени, даже если панель закрыта.",
+    /* meteo e stazione meteo */
+    "Temperatura esterna": "Температура на улице", "Umidità esterna": "Влажность на улице", "Temperatura interna": "Температура в доме", "Umidità interna": "Влажность в доме",
+    "Raffica": "Порыв", "raffica massima km/h": "максимальный порыв, км/ч", "colpi": "ударов", "All'esterno": "На улице", "Dentro casa": "В доме", "tocca un valore per lo storico": "нажмите на значение, чтобы увидеть историю", "dati di esempio": "примерные данные",
+    "Apri i dati della stazione meteo": "Открыть данные метеостанции", "Apri il meteo": "Открыть погоду", "Pomeriggio con nubi sparse e schiarite. Vento moderato e clima mite.": "День с переменной облачностью и прояснениями. Умеренный ветер, мягкая погода.",
+    "previsioni di oggi e domani e temperatura esterna in alto": "прогноз и уличная температура вверху", "Frase del meteo (AI)": "Фраза о погоде (ИИ)",
+    "sensore, input_text o text con la frase da mostrare": "sensor, input_text или text с фразой для показа", "Stazione Meteo (es. Ecowitt, Netatmo)": "Метеостанция (напр. Ecowitt, Netatmo)",
+    "si apre toccando la temperatura in alto": "открывается нажатием на температуру вверху", "se c'è, sostituisce quella del servizio meteo": "если задана, заменяет данные погодного сервиса", "es. la console della stazione": "напр. консоль станции",
+    /* batterie */
+    "Batterie": "Батареи", "dalla più scarica": "от самой разряженной", "Mostra tutte": "Показать все", "Mostra tutte ({n})": "Показать все ({n})", "Mostra meno": "Показать меньше", "Scarica": "Разряжена", "OK": "OK",
+    "{n} da cambiare": "Заменить: {n}", "{n} da cambiare o ricaricare": "Заменить или зарядить: {n}", "{n} dispositivi, dalla più scarica": "Устройств: {n}, от самой разряженной",
+    "Sensore porta ingresso": "Датчик входной двери", "Telecamera giardino": "Камера в саду", "Sensore movimento": "Датчик движения", "Termometro camera": "Термометр в спальне", "Telecomando": "Пульт",
+    /* colori ed effetti */
+    "Colori ed effetti": "Цвета и эффекты", "Colori ed effetti di {n}": "Цвета и эффекты: {n}", "Colore": "Цвет", "Scegli un altro colore": "Выбрать другой цвет", "Bianco": "Белый",
+    "Luminosità": "Яркость", "Effetti": "Эффекты", "Altre impostazioni": "Другие настройки", "Calda": "Тёплый", "Naturale": "Нейтральный", "Fredda": "Холодный",
+    "Spenta: scegli un colore per accenderla": "Выключена: выберите цвет, чтобы включить", "Colore impostato": "Цвет задан", "Bianco {n}": "Белый: {n}", "Luminosità {p}%": "Яркость {p}%", "Effetto: {n}": "Эффект: {n}",
+    /* Baizaman · scheda Meteo, scelta della città */
+    "Meteo": "Погода", "oggi e i prossimi giorni": "сегодня и ближайшие дни", "Dati non aggiornati": "Данные устарели", "Aggiorna il meteo": "Обновить погоду", "Cambia città": "Сменить город",
+    "Carico il meteo…": "Загружаю погоду…", "Riprova": "Повторить", "Dati:": "Данные:", "Dati: servizio meteo di Home Assistant": "Данные: погодный сервис Home Assistant",
+    "Dopodomani": "Послезавтра", "giorno": "день", "notte": "ночь", "Percepita {t}°": "Ощущается как {t}°", "Umidità {p}%": "Влажность {p}%", "Vento {v} m/s": "Ветер {v} м/с",
+    "Il servizio meteo non ha dato le previsioni.": "Погодный сервис не предоставил прогноз.",
+    "Le previsioni compaiono quando la plancia è collegata a Home Assistant.": "Прогноз появится, когда панель будет подключена к Home Assistant.",
+    "Non riesco a ottenere le previsioni. Controlla la connessione a internet di Home Assistant.": "Не удаётся получить прогноз. Проверьте подключение Home Assistant к интернету.",
+    "Scrivi almeno due lettere": "Введите хотя бы две буквы", "Cerco…": "Ищу…", "Nessuna città trovata": "Город не найден", "Ricerca non riuscita: il servizio non risponde": "Поиск не удался: сервис не отвечает",
+    "Salvo la città…": "Сохраняю город…", "Città del meteo: {n}": "Город для погоды: {n}", "Aggiornato alle {t}": "Обновлено в {t}", "Città del meteo": "Город для погоды", "previsioni Open-Meteo": "прогноз Open-Meteo",
+    "Cerca una città": "Найти город", "Cerca": "Найти", "Basato su": "Основано на", "Baizaman Smart Home · anteprima: non riflette dati reali di un impianto.": "Baizaman Smart Home · предпросмотр: это не реальные данные дома.",
+    "Sereno": "Ясно", "Prevalentemente sereno": "Преимущественно ясно", "Parzialmente nuvoloso": "Переменная облачность", "Nuvoloso": "Пасмурно", "Nebbia con brina": "Изморозь и туман", "Pioviggine": "Морось",
+    "Pioviggine intensa": "Сильная морось", "Pioggia gelata": "Ледяной дождь", "Pioggia debole": "Небольшой дождь", "Pioggia forte": "Сильный дождь", "Neve debole": "Небольшой снег", "Neve forte": "Сильный снег",
+    "Granelli di neve": "Снежная крупа", "Rovesci": "Ливни", "Rovesci violenti": "Сильные ливни", "Rovesci di neve": "Снегопады", "Temporale con grandine": "Гроза с градом"
+  };
+  var DICT = { en: EN, ru: RU };
+
+  /* "auto" o vuoto: la lingua di Home Assistant (o del browser). Russo e italiano hanno il loro dizionario,
+     l'inglese pure; per ogni altra lingua si usa il russo, la lingua di Baizaman Smart Home. */
   function pick(lang) {
     var l = String(lang || "").toLowerCase();
-    if (!l || l === "auto") l = (document.documentElement.lang || navigator.language || "it").toLowerCase();
-    return l.indexOf("it") === 0 ? "it" : "en";
+    if (!l || l === "auto") l = (document.documentElement.lang || navigator.language || "ru").toLowerCase();
+    return l.indexOf("it") === 0 ? "it" : l.indexOf("en") === 0 ? "en" : "ru";
   }
 
   g.AuroraI18n = {
@@ -251,7 +506,7 @@
         return r;
       }
       T.lang = code;
-      T.loc = code === "it" ? "it-IT" : "en-GB";
+      T.loc = code === "it" ? "it-IT" : code === "ru" ? "ru-RU" : "en-GB";
       /* traduce i testi fissi già presenti nella pagina (nodi di testo e attributi) */
       T.dom = function (root) {
         if (!D) return;

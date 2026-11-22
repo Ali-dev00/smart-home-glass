@@ -137,6 +137,6 @@
   window.AuroraGlassPanelTag = PANEL_TAG;
 
   window.customCards = window.customCards || [];
-  window.customCards.push({ type: "aurora-glass-card", name: "Aurora Glass v3", description: "Animated dashboard: worlds, weather effects and buttons made of images and GIFs." });
+  window.customCards.push({ type: "aurora-glass-card", name: "Baizaman Smart Home", description: "Smart home dashboard in glassmorphism style: worlds, weather forecast and buttons made of images and GIFs." });
   console.info("%c AURORA GLASS v3 %c card loaded ", "background:#7C5CFF;color:#fff;border-radius:4px 0 0 4px;padding:2px 6px", "background:#1b1740;color:#fff;border-radius:0 4px 4px 0;padding:2px 6px");
 })();

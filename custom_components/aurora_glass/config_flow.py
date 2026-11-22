@@ -311,7 +311,7 @@ class AuroraGlassConfigFlow(AuroraFlowSteps, ConfigFlow, domain=DOMAIN):
             return self.async_abort(reason="already_configured")
         await self.async_set_unique_id(f"{DOMAIN}_welcome")
         self._abort_if_unique_id_configured()
-        self.context["title_placeholders"] = {"name": "Aurora Glass"}
+        self.context["title_placeholders"] = {"name": "Baizaman Smart Home"}
         return await self.async_step_welcome()
 
     async def async_step_welcome(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:

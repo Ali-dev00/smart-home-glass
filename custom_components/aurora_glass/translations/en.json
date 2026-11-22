@@ -3,8 +3,8 @@
     "flow_title": "{name}",
     "step": {
       "welcome": {
-        "title": "Aurora Glass is installed",
-        "description": "Let's create your animated dashboard. In a few steps you pick its name and language, your rooms and the devices to show. Rooms, lights and sensors are found automatically from your Home Assistant areas: you only check and rename. You can change everything later from Settings → Devices & services → Aurora Glass → Configure."
+        "title": "Baizaman Smart Home is installed",
+        "description": "Let's create your animated dashboard. In a few steps you pick its name and language, your rooms and the devices to show. Rooms, lights and sensors are found automatically from your Home Assistant areas: you only check and rename. You can change everything later from Settings → Devices & services → Baizaman Smart Home → Configure."
       },
       "user": {
         "title": "Your dashboard",
@@ -94,14 +94,14 @@
       "name_required": "Give the room a name."
     },
     "abort": {
-      "already_configured": "Aurora Glass is already set up.",
+      "already_configured": "Baizaman Smart Home is already set up.",
       "not_this_instance": "This announcement comes from another Home Assistant."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Aurora Glass",
+        "title": "Baizaman Smart Home",
         "description": "What do you want to change?",
         "menu_options": {
           "general": "Name, icon and language",
@@ -181,7 +181,7 @@
       },
       "packs": {
         "title": "Packs",
-        "description": "{status}\n\nTick a pack to download and enable it, untick it to remove it. Packs are optional: Aurora Glass works the same without them. A pack adds features to every Aurora dashboard (for example an extra view in the dock).\n\n[Discover the packs on domotikpro.it]({packs_url})",
+        "description": "{status}\n\nTick a pack to download and enable it, untick it to remove it. Packs are optional: Baizaman Smart Home works the same without them. A pack adds features to every Aurora dashboard (for example an extra view in the dock).\n\n[Discover the packs on domotikpro.it]({packs_url})",
         "data": {
           "packs": "Packs"
         }
@@ -209,6 +209,7 @@
     "language": {
       "options": {
         "auto": "Automatic (Home Assistant language)",
+        "ru": "Русский",
         "it": "Italiano",
         "en": "English"
       }

@@ -23,6 +23,7 @@ from .const import CONF_URL_PATH, DOMAIN, PANEL_ELEMENT, URL_BASE, VERSION
 from .editor import async_setup_editor
 from .helpers import build_card_config, panel_title
 from .packs import async_setup_packs
+from .weather import async_setup_weather
 
 _LOGGER = logging.getLogger(__name__)
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
@@ -42,6 +43,9 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     # timer dell'irrigazione e foto delle telecamere (vedi actions.py)
     if "irrigation" not in hass.data[DOMAIN]:
         await async_setup_actions(hass)
+    # meteo Open-Meteo, città scelta e cache (vedi weather.py)
+    if "weather" not in hass.data[DOMAIN]:
+        await async_setup_weather(hass)
     return True
 
 

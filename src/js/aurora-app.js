@@ -984,8 +984,6 @@
       $("#phase-out").textContent = pad(hh) + ":" + pad(mm);
       $("#phase-range").value = h;
       setIco($("#phase-icon"), K.dy < .12 ? "mdi-weather-night" : K.dy > .8 ? "mdi-weather-sunny" : (h < 12 ? "mdi-weather-sunset-up" : "mdi-weather-sunset-down"));
-      var gr = (h >= 22 || h < 5) ? T("Buonanotte") : h < 12 ? T("Buongiorno") : h < 18 ? T("Buon pomeriggio") : T("Buonasera");
-      $("#greet").textContent = gr + ", " + userName;
       setArt();
     }
     function tickClock() { if (!clockLive) return; var d = new Date(); applyHour(d.getHours() + d.getMinutes() / 60); }
@@ -1235,11 +1233,13 @@
       /* temperatura esterna: quella della stazione meteo se c'è (misurata a casa), altrimenti quella del servizio meteo */
       var w = sv(ENT.weather), ct = $("#chip-temp"), wsT = wsEnt("temp_out") ? sv(wsEnt("temp_out")) : null;
       if (wsT && !isUnavail(wsT) && !isNaN(parseFloat(wsT.state))) { ct.hidden = false; $("#temp-val").textContent = fmt(parseFloat(wsT.state)) + " " + (wsT.attributes.unit_of_measurement || "°C"); setIco($("#temp-ico"), w ? condIcon(w.state) : "mdi-thermometer"); }
-      else if (w && w.attributes.temperature !== undefined) { ct.hidden = false; $("#temp-val").textContent = fmt(w.attributes.temperature) + " " + (w.attributes.temperature_unit || "°C"); setIco($("#temp-ico"), condIcon(w.state)); } else ct.hidden = true;
+      else if (w && w.attributes.temperature !== undefined) { ct.hidden = false; $("#temp-val").textContent = fmt(w.attributes.temperature) + " " + (w.attributes.temperature_unit || "°C"); setIco($("#temp-ico"), condIcon(w.state)); }
+      else if (WX.data && WX.data.current && WX.data.current.temp !== null && WX.data.current.temp !== undefined) { ct.hidden = false; $("#temp-val").textContent = fmt(WX.data.current.temp) + " °C"; setIco($("#temp-ico"), wmo(WX.data.current.code, WX.data.current.is_day).ico); }
+      else ct.hidden = true;
       var p = sv(ENT.energy.power) || sv(ENT.power), cp = $("#chip-power");
       if (p && !isUnavail(p) && !isNaN(parseFloat(p.state))) { cp.hidden = false; var v = parseFloat(p.state), u = p.attributes.unit_of_measurement || "W"; if (u === "kW") v *= 1000; chipPower(v); } else cp.hidden = true;
       var nm = HASS && HASS.user && HASS.user.name ? HASS.user.name.split(" ")[0] : "";
-      if (nm && nm !== userName) { userName = nm; tickClock(); if (!clockLive) applyHour(hour); }
+      if (nm && nm !== userName) userName = nm;
       climaFromHass(); renderClima();
       syncVacuum();
       syncGarden();
@@ -1794,21 +1794,9 @@
         if (x.condition && x.is_daytime !== false) { o.conds[x.condition] = (o.conds[x.condition] || 0) + 1; }
       });
       order.forEach(function (k) { var o = days[k], best = 0; Object.keys(o.conds).forEach(function (c) { if (o.conds[c] > best) { best = o.conds[c]; o.cond = c; } }); });
-      var now = new Date(), tom = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-      var a = days[dayKey(now)], b = days[dayKey(tom)];
+      var now = new Date(), tom = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1), aft = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2);
       /* servizi che partono da domani: il primo giorno disponibile fa da «oggi» solo se è proprio oggi */
-      return { today: a || null, tomorrow: b || null };
-    }
-    function fcChip(which, d) {
-      var chip = $("#w-fc-" + which); if (!chip) return false;
-      chip.hidden = !d || d.hi === null;
-      if (chip.hidden) return false;
-      setIco($("#w-fc-" + which + "-ico"), condIcon(d.cond));
-      $("#w-fc-" + which + "-max").textContent = fmt(d.hi, 0) + "°";
-      $("#w-fc-" + which + "-min").textContent = d.lo === null ? "—" : fmt(d.lo, 0) + "°";
-      var pop = $("#w-fc-" + which + "-pop");
-      if (pop) { pop.hidden = d.pop === null || d.pop < 10; $("#w-fc-" + which + "-pop-val").textContent = Math.round(d.pop || 0) + "%"; }
-      return true;
+      return { today: days[dayKey(now)] || null, tomorrow: days[dayKey(tom)] || null, after: days[dayKey(aft)] || null };
     }
     /* frase del meteo: lo stato di un sensore, di un input_text o di un text; se il testo è lungo
        (oltre 255 caratteri Home Assistant lo mette negli attributi) si legge l'attributo */
@@ -1871,29 +1859,159 @@
       $("#ws-close").addEventListener("click", wsClose);
       m.addEventListener("click", function (e) { if (e.target === m) wsClose(); var c = e.target.closest("[data-ws]"); if (c && LIVE) moreInfo(c.dataset.ws); });
       m.addEventListener("keydown", function (e) { if (e.key === "Escape") wsClose(); });
-      $$(".w-fc-chip").forEach(function (c) { c.addEventListener("click", function () { if (LIVE && ENT.weather) moreInfo(ENT.weather); }); });
       var ai = $("#w-ai-summary"); if (ai) ai.addEventListener("click", function () { if (LIVE && ENT.weather_ai) moreInfo(ENT.weather_ai); });
-      syncWeatherForecasts();
+      buildWeatherCard();
+    }
+    /* ------------------------------------------------------------------ scheda Meteo: adesso e tre giorni.
+       Fonte principale: Open-Meteo, chiesto dal backend di Home Assistant (aurora_glass/weather/get, cache 20 minuti,
+       ultima previsione salvata). Riserva: il servizio meteo weather.* di Home Assistant, se c'è e dà le previsioni.
+       Niente è inventato: senza dati la scheda lo dice. */
+    var WX = { data: null, status: "loading", error: "", busy: false, last: 0, results: null };
+    /* codici WMO di Open-Meteo → [icona giorno, icona notte, testo]; le condizioni di Home Assistant passano da WMO_HA */
+    var WMO = {
+      0: ["mdi-weather-sunny", "mdi-weather-night", "Sereno"], 1: ["mdi-weather-sunny", "mdi-weather-night", "Prevalentemente sereno"], 2: ["mdi-weather-partly-cloudy", "mdi-weather-night-partly-cloudy", "Parzialmente nuvoloso"],
+      3: ["mdi-weather-cloudy", "mdi-weather-cloudy", "Nuvoloso"], 45: ["mdi-weather-fog", "mdi-weather-fog", "Nebbia"], 48: ["mdi-weather-fog", "mdi-weather-fog", "Nebbia con brina"],
+      51: ["mdi-weather-rainy", "mdi-weather-rainy", "Pioviggine"], 53: ["mdi-weather-rainy", "mdi-weather-rainy", "Pioviggine"], 55: ["mdi-weather-rainy", "mdi-weather-rainy", "Pioviggine intensa"],
+      56: ["mdi-weather-snowy-rainy", "mdi-weather-snowy-rainy", "Pioggia gelata"], 57: ["mdi-weather-snowy-rainy", "mdi-weather-snowy-rainy", "Pioggia gelata"],
+      61: ["mdi-weather-rainy", "mdi-weather-rainy", "Pioggia debole"], 63: ["mdi-weather-rainy", "mdi-weather-rainy", "Pioggia"], 65: ["mdi-weather-pouring", "mdi-weather-pouring", "Pioggia forte"],
+      66: ["mdi-weather-snowy-rainy", "mdi-weather-snowy-rainy", "Pioggia gelata"], 67: ["mdi-weather-snowy-rainy", "mdi-weather-snowy-rainy", "Pioggia gelata"],
+      71: ["mdi-weather-snowy", "mdi-weather-snowy", "Neve debole"], 73: ["mdi-weather-snowy", "mdi-weather-snowy", "Neve"], 75: ["mdi-weather-snowy-heavy", "mdi-weather-snowy-heavy", "Neve forte"], 77: ["mdi-weather-snowy", "mdi-weather-snowy", "Granelli di neve"],
+      80: ["mdi-weather-rainy", "mdi-weather-rainy", "Rovesci"], 81: ["mdi-weather-pouring", "mdi-weather-pouring", "Rovesci"], 82: ["mdi-weather-pouring", "mdi-weather-pouring", "Rovesci violenti"],
+      85: ["mdi-weather-snowy", "mdi-weather-snowy", "Rovesci di neve"], 86: ["mdi-weather-snowy-heavy", "mdi-weather-snowy-heavy", "Rovesci di neve"],
+      95: ["mdi-weather-lightning", "mdi-weather-lightning", "Temporale"], 96: ["mdi-weather-lightning-rainy", "mdi-weather-lightning-rainy", "Temporale con grandine"], 99: ["mdi-weather-lightning-rainy", "mdi-weather-lightning-rainy", "Temporale con grandine"]
+    };
+    var WMO_HA = { sunny: 0, "clear-night": 0, partlycloudy: 2, cloudy: 3, fog: 45, rainy: 63, pouring: 65, snowy: 73, "snowy-rainy": 67, lightning: 95, "lightning-rainy": 95, hail: 96, windy: 3, "windy-variant": 3, exceptional: 3 };
+    function wmo(code, isDay) {
+      var e = WMO[code]; if (!e) return { ico: "mdi-weather-partly-cloudy", txt: "" };
+      return { ico: isDay === false ? e[1] : e[0], txt: T(e[2]) };
+    }
+    function wxDayLabel(i, iso) {
+      var name = i === 0 ? T("Oggi") : i === 1 ? T("Domani") : T("Dopodomani"), p = String(iso || "").split("-"), sub = "";
+      if (p.length === 3) { var d = new Date(+p[0], +p[1] - 1, +p[2]); if (!isNaN(d)) sub = d.toLocaleDateString(LOC, { weekday: "short", day: "numeric" }); }
+      return '<span class="wc-dname">' + esc(name) + (sub ? "<small>" + esc(sub) + "</small>" : "") + "</span>";
+    }
+    function wxSet(state, msg, ico) {
+      var card = $("#weather-card"); if (!card) return;
+      card.dataset.state = state;
+      var body = $("#wc-body"), box = $("#wc-msg");
+      body.hidden = state !== "ok" && state !== "stale"; box.hidden = !body.hidden;
+      if (msg !== undefined) $("#wc-msg-text").textContent = msg;
+      if (ico) setIco($("#wc-msg-ico"), ico);
+      $("#wc-retry").hidden = !(LIVE && (state === "error" || state === "nodata"));
+      $("#wc-badge").hidden = state !== "stale";
+    }
+    function wxFacts(cur) {
+      function one(id, txt) { var li = $("#" + id); li.hidden = !txt; if (txt) $("span", li).textContent = txt; }
+      one("wc-feels", cur && cur.feels !== null && cur.feels !== undefined ? T("Percepita {t}°", { t: fmt(cur.feels, 0) }) : "");
+      one("wc-hum", cur && cur.humidity !== null && cur.humidity !== undefined ? T("Umidità {p}%", { p: Math.round(cur.humidity) }) : "");
+      one("wc-wind", cur && cur.wind !== null && cur.wind !== undefined ? T("Vento {v} m/s", { v: fmt(cur.wind, 1) }) : "");
+    }
+    function wxRender(days, cur, source) {
+      /* days: [{ date, code, max, min, pop }] già pronti (Open-Meteo o riserva di Home Assistant) */
+      var any = days.some(function (d) { return d && d.max !== null && d.max !== undefined; });
+      if (!any) { wxSet("nodata", T("Il servizio meteo non ha dato le previsioni."), "mdi-cloud-question-outline"); return false; }
+      var html = "";
+      days.forEach(function (d, i) {
+        if (!d) return;
+        var w = wmo(d.code, true), has = d.max !== null && d.max !== undefined, lo = d.min !== null && d.min !== undefined;
+        html += '<div class="wc-day" data-today="' + (i === 0 ? "1" : "") + '">' + wxDayLabel(i, d.date) +
+          '<i class="mdi ' + w.ico + '"></i><div class="wc-dtemp"><div><b>' + (has ? fmt(d.max, 0) + "°" : "—") + "</b><em>" + esc(T("giorno")) + "</em></div><span><div>" + (lo ? fmt(d.min, 0) + "°" : "—") + "</div><em>" + esc(T("notte")) + "</em></span></div>" +
+          '<span class="wc-dtext">' + esc(w.txt) + "</span>" +
+          (d.pop !== null && d.pop !== undefined && d.pop >= 5 ? '<span class="wc-pop"><i class="mdi mdi-water-percent"></i>' + Math.round(d.pop) + "%</span>" : "") + "</div>";
+      });
+      $("#wc-days").innerHTML = html; hydrate($("#wc-days"));
+      var now = cur && cur.temp !== null && cur.temp !== undefined, nw = cur ? wmo(cur.code, cur.is_day) : wmo(days[0] && days[0].code, true);
+      setIco($("#wc-ico"), nw.ico);
+      $("#wc-temp").textContent = now ? fmt(cur.temp, 0) + "°" : (days[0] && days[0].max !== null ? fmt(days[0].max, 0) + "°" : "--°");
+      $("#wc-cond").textContent = nw.txt; wxFacts(cur);
+      $("#wc-source").innerHTML = source === "ha" ? esc(T("Dati: servizio meteo di Home Assistant")) : esc(T("Dati:")) + ' <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>';
+      return true;
+    }
+    function wxHaDays() {
+      /* riserva: previsioni del servizio meteo di Home Assistant */
+      var w = sv(ENT.weather); if (!w) return null;
+      var list = FC.data; if (!list && Array.isArray(w.attributes.forecast)) list = w.attributes.forecast;
+      var d = forecastDays(list), out = [], base = new Date();
+      [d.today, d.tomorrow, d.after].forEach(function (x, i) {
+        var dt = new Date(base.getFullYear(), base.getMonth(), base.getDate() + i);
+        out.push(x ? { date: dayKey(dt), code: x.cond && WMO_HA[x.cond] !== undefined ? WMO_HA[x.cond] : null, max: x.hi, min: x.lo, pop: x.pop } : null);
+      });
+      return out.some(Boolean) ? { days: out, cur: w.attributes.temperature !== undefined ? { temp: parseFloat(w.attributes.temperature), code: WMO_HA[w.state] !== undefined ? WMO_HA[w.state] : null, is_day: w.state === "clear-night" ? false : null, humidity: w.attributes.humidity !== undefined ? parseFloat(w.attributes.humidity) : null } : null } : null;
+    }
+    function wxCityText(c) { return c ? [c.name, c.country].filter(Boolean).join(", ") : ""; }
+    function wxShowCity(c) {
+      $("#wc-city").textContent = c ? c.name : "—"; $("#wc-country").textContent = c ? [c.admin, c.country].filter(Boolean).join(", ") : "";
+      var cur = $("#wx-cur"); if (cur) cur.textContent = wxCityText(c) || "—";
+    }
+    function wxUpdated(iso) {
+      var t = iso ? new Date(iso) : null;
+      $("#wc-updated").textContent = t && !isNaN(t) ? T("Aggiornato alle {t}", { t: t.toLocaleTimeString(LOC, { hour: "2-digit", minute: "2-digit" }) }) : "";
+    }
+    function loadWeather(force) {
+      if (!LIVE) { wxSet("nodata", T("Le previsioni compaiono quando la plancia è collegata a Home Assistant."), "mdi-cloud-off-outline"); $("#wc-updated").textContent = ""; return; }
+      if (WX.busy) return;
+      WX.busy = true; WX.last = Date.now(); if (!WX.data) wxSet("loading", T("Carico il meteo…"), "mdi-cloud-sync-outline");
+      whenHass().then(function (h) { return h.callWS({ type: "aurora_glass/weather/get", force: !!force }); }).then(function (r) {
+        WX.busy = false; WX.last = Date.now();
+        if (r && r.city) wxShowCity(r.city);
+        if (r && (r.status === "ok" || r.status === "stale") && r.days) {
+          WX.data = r; WX.status = r.status; WX.error = r.error || "";
+          if (wxRender(r.days, r.current, "om")) { wxSet(r.status); wxUpdated(r.fetched); }
+        } else wxFail(r && r.error);
+      }).catch(function (e) { WX.busy = false; wxFail(e && (e.message || e.code)); });
+    }
+    function wxFail(err) {
+      WX.error = err || "";
+      if (WX.data) { WX.status = "stale"; wxSet("stale"); return; }   /* l'ultima previsione resta visibile, segnata come non aggiornata */
+      var ha = wxHaDays();
+      if (ha && wxRender(ha.days, ha.cur, "ha")) { WX.status = "ha"; wxSet("ok"); $("#wc-updated").textContent = ""; return; }
+      WX.status = "error"; wxSet("error", T("Non riesco a ottenere le previsioni. Controlla la connessione a internet di Home Assistant."), "mdi-cloud-alert-outline");
+    }
+    function wxSearch(q) {
+      var box = $("#wx-res"); if (!box) return;
+      q = String(q || "").trim(); if (q.length < 2) { box.innerHTML = "<p>" + esc(T("Scrivi almeno due lettere")) + "</p>"; return; }
+      box.innerHTML = "<p>" + esc(T("Cerco…")) + "</p>";
+      whenHass().then(function (h) { return h.callWS({ type: "aurora_glass/weather/search", query: q, language: T.lang }); }).then(function (r) {
+        var list = (r && r.results) || []; WX.results = list;
+        if (!list.length) { box.innerHTML = "<p>" + esc(T("Nessuna città trovata")) + "</p>"; return; }
+        box.innerHTML = list.map(function (c, i) { return '<button type="button" data-i="' + i + '"><i class="mdi mdi-map-marker-outline"></i><span>' + esc(c.name) + "<small>" + esc([c.admin, c.country].filter(Boolean).join(", ")) + "</small></span></button>"; }).join("");
+        hydrate(box);
+      }).catch(function () { box.innerHTML = "<p>" + esc(T("Ricerca non riuscita: il servizio non risponde")) + "</p>"; });
+    }
+    function wxPick(c) {
+      if (!c) return;
+      var box = $("#wx-res"); box.innerHTML = "<p>" + esc(T("Salvo la città…")) + "</p>";
+      WX.data = null; wxSet("loading", T("Carico il meteo…"), "mdi-cloud-sync-outline");
+      whenHass().then(function (h) { return h.callWS({ type: "aurora_glass/weather/set_city", name: c.name, country: c.country || "", admin: c.admin || "", latitude: c.latitude, longitude: c.longitude }); }).then(function (r) {
+        box.innerHTML = ""; $("#wx-q").value = "";
+        if (r && r.city) wxShowCity(r.city);
+        if (r && (r.status === "ok" || r.status === "stale") && r.days) { WX.data = r; WX.status = r.status; if (wxRender(r.days, r.current, "om")) { wxSet(r.status); wxUpdated(r.fetched); } }
+        else wxFail(r && r.error);
+        toast(T("Città del meteo: {n}", { n: c.name }), "mdi-map-marker-check-outline", "var(--ok)");
+      }).catch(function (e) { box.innerHTML = "<p>" + esc(T("Non riuscito: {e}", { e: (e && e.message) || T("errore di Home Assistant") })) + "</p>"; loadWeather(false); });
+    }
+    function buildWeatherCard() {
+      var admin = LIVE && !!HASS && !!HASS.user && !!HASS.user.is_admin;
+      $("#wx-set").hidden = !admin; $("#wc-city-btn").hidden = !admin; $("#wc-refresh").hidden = !LIVE;
+      $("#wc-retry").addEventListener("click", function () { WX.data = null; loadWeather(true); });
+      $("#wc-refresh").addEventListener("click", function () { loadWeather(true); });
+      $("#wc-city-btn").addEventListener("click", function () { openDrawer(); later(function () { var s = $("#wx-set"); if (s && s.scrollIntoView) s.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" }); $("#wx-q").focus({ preventScroll: true }); }, 380); });
+      $("#wx-form").addEventListener("submit", function (e) { e.preventDefault(); wxSearch($("#wx-q").value); });
+      $("#wx-res").addEventListener("click", function (e) { var b = e.target.closest("button[data-i]"); if (b && WX.results) wxPick(WX.results[+b.dataset.i]); });
+      if (!LIVE) { wxShowCity({ name: "Астана", country: "Казахстан" }); loadWeather(false); return; }
+      loadWeather(false);
+      every(function () { if (Date.now() - WX.last > 20 * 60 * 1000) loadWeather(false); }, 60000);
     }
     function syncWeatherForecasts() {
-      var hwBox = $("#hero-weather-box"), aiBox = $("#w-ai-summary"), aiTxt = $("#w-ai-text"), row = $("#w-forecast-row"), ct = $("#chip-temp");
+      var ct = $("#chip-temp");
       if (ct) { ct.dataset.ws = hasStation() ? "1" : ""; ct.title = hasStation() ? T("Apri i dati della stazione meteo") : T("Apri il meteo"); }
-      if (!LIVE) {
-        fcChip("today", { hi: 14, lo: 8, cond: "partlycloudy", pop: 20 });
-        fcChip("tomorrow", { hi: 17, lo: 7, cond: "cloudy", pop: null });
-        if (aiBox) { aiBox.hidden = false; aiTxt.textContent = T("Pomeriggio con nubi sparse e schiarite. Vento moderato e clima mite."); }
-        if (hwBox) hwBox.hidden = false;
-        return;
-      }
+      var aiBox = $("#w-ai-summary"), aiTxt = $("#w-ai-text");
+      if (!LIVE) { if (aiBox) aiBox.hidden = true; return; }
       forecastSubscribe();
-      var wSt = sv(ENT.weather), list = FC.data;
-      if (!list && wSt && Array.isArray(wSt.attributes.forecast)) list = wSt.attributes.forecast;   /* Home Assistant prima del 2024.3 */
-      var days = forecastDays(list), any = fcChip("today", days.today);
-      any = fcChip("tomorrow", days.tomorrow) || any;
-      if (row) row.hidden = !any;
       var txt = ENT.weather_ai ? aiText(sv(ENT.weather_ai)) : "";
       if (aiBox) { aiBox.hidden = !txt; if (txt) aiTxt.textContent = txt; }
-      if (hwBox) hwBox.hidden = !any && !txt;
+      /* se Open-Meteo non risponde, la riserva segue le previsioni del servizio meteo di Home Assistant */
+      if (WX.status === "error" || WX.status === "ha") { var ha = wxHaDays(); if (ha && wxRender(ha.days, ha.cur, "ha")) { WX.status = "ha"; wxSet("ok"); } }
       if ($("#wsbox").classList.contains("open")) renderStation();
     }
 
@@ -2562,7 +2680,7 @@
       $("#en-days-t").textContent = eur ? T("Costo giornaliero") : T("Consumo giornaliero");
       if (!a.length) { box.innerHTML = '<div class="en-empty" style="position:static;height:120px;display:grid">' + T("Storico non disponibile") + '</div>'; if (sum) sum.innerHTML = ""; return; }
       var vals = a.map(function (x) { return eur ? x.v * EN.pEff : x.v; });
-      var mx = Math.max.apply(null, vals) || 1, today = new Date().toDateString(), wd = T.lang === "en" ? ["S", "M", "T", "W", "T", "F", "S"] : ["D", "L", "M", "M", "G", "V", "S"], tk = 0;
+      var mx = Math.max.apply(null, vals) || 1, today = new Date().toDateString(), wd = T.lang === "en" ? ["S", "M", "T", "W", "T", "F", "S"] : T.lang === "ru" ? ["В", "П", "В", "С", "Ч", "П", "С"] : ["D", "L", "M", "M", "G", "V", "S"], tk = 0;
       a.forEach(function (x) { tk += x.v; });
       box.innerHTML = a.map(function (x, i) {
         return '<div class="day' + (x.d.toDateString() === today ? " today" : "") + '" title="' + x.d.toLocaleDateString(LOC, { weekday: "long", day: "numeric", month: "long" }) + " · " + fmtKwh(x.v) + " kWh · " + fmtEur(x.v * EN.pEff) + '"><span class="d-v">' + (eur ? Number(vals[i]).toLocaleString(LOC, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : fmtKwh(vals[i])) + '</span><span class="bar2" style="height:' + Math.max(3, vals[i] / mx * 100) + '%"></span><span class="d-l">' + wd[x.d.getDay()] + x.d.getDate() + "</span></div>";
@@ -2726,7 +2844,7 @@
       while ((cn = cw.nextNode())) if (cn.nodeValue.indexOf("€") > -1) cn.nodeValue = cn.nodeValue.replace(/€/g, CUR);
       var be = $('#en-dunit [data-u="eur"]'); if (be) be.textContent = CUR;
     }
-    if (LIVE) { HOST.setAttribute("data-live", "1"); var fnote = $("footer.note"); if (fnote) fnote.textContent = T("Aurora Glass v3 · collegata a Home Assistant"); var rhint = $("#rooms-hint"); if (rhint) rhint.textContent = T("tocca per accendere, tieni premuto per la luminosità"); }
+    if (LIVE) { HOST.setAttribute("data-live", "1"); var rhint = $("#rooms-hint"); if (rhint) rhint.textContent = T("tocca per accendere, tieni premuto per la luminosità"); }
     if (EMB) HOST.setAttribute("data-embedded", "1");
     hydrate(ROOT);
 

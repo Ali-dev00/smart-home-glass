@@ -1,6 +1,6 @@
 {
   "domain": "aurora_glass",
-  "name": "Aurora Glass",
+  "name": "Baizaman Smart Home",
   "codeowners": ["@lucalux00"],
   "config_flow": true,
   "dependencies": ["frontend", "http", "panel_custom", "websocket_api"],

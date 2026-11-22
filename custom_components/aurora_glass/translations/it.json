@@ -3,8 +3,8 @@
     "flow_title": "{name}",
     "step": {
       "welcome": {
-        "title": "Aurora Glass è installata",
-        "description": "Creiamo la tua plancia animata. In pochi passi scegli nome e lingua, le stanze e i dispositivi da mostrare. Stanze, luci e sensori vengono trovati da soli dalle aree di Home Assistant: devi solo controllare e dare i nomi. Puoi cambiare tutto anche dopo da Impostazioni → Dispositivi e servizi → Aurora Glass → Configura."
+        "title": "Baizaman Smart Home è installata",
+        "description": "Creiamo la tua plancia animata. In pochi passi scegli nome e lingua, le stanze e i dispositivi da mostrare. Stanze, luci e sensori vengono trovati da soli dalle aree di Home Assistant: devi solo controllare e dare i nomi. Puoi cambiare tutto anche dopo da Impostazioni → Dispositivi e servizi → Baizaman Smart Home → Configura."
       },
       "user": {
         "title": "La tua plancia",
@@ -94,14 +94,14 @@
       "name_required": "Dai un nome alla stanza."
     },
     "abort": {
-      "already_configured": "Aurora Glass è già configurata.",
+      "already_configured": "Baizaman Smart Home è già configurata.",
       "not_this_instance": "Questo annuncio arriva da un altro Home Assistant."
     }
   },
   "options": {
     "step": {
       "init": {
-        "title": "Aurora Glass",
+        "title": "Baizaman Smart Home",
         "description": "Cosa vuoi cambiare?",
         "menu_options": {
           "general": "Nome, icona e lingua",
@@ -181,7 +181,7 @@
       },
       "packs": {
         "title": "Pacchetti",
-        "description": "{status}\n\nSpunta un pacchetto per scaricarlo e attivarlo, togli la spunta per rimuoverlo. Sono facoltativi: Aurora Glass funziona uguale anche senza. Un pacchetto aggiunge funzioni a tutte le plance Aurora (per esempio una vista in più nel dock).\n\n[Scopri i pacchetti su domotikpro.it]({packs_url})",
+        "description": "{status}\n\nSpunta un pacchetto per scaricarlo e attivarlo, togli la spunta per rimuoverlo. Sono facoltativi: Baizaman Smart Home funziona uguale anche senza. Un pacchetto aggiunge funzioni a tutte le plance Aurora (per esempio una vista in più nel dock).\n\n[Scopri i pacchetti su domotikpro.it]({packs_url})",
         "data": {
           "packs": "Pacchetti"
         }
@@ -209,6 +209,7 @@
     "language": {
       "options": {
         "auto": "Automatica (lingua di Home Assistant)",
+        "ru": "Русский",
         "it": "Italiano",
         "en": "English"
       }

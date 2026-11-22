@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="it" data-theme="dark" data-alarm="off" data-btn="img">
+<html lang="ru" data-theme="dark" data-alarm="off" data-btn="img">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Aurora Glass v3</title>
-<meta name="description" content="Aurora Glass v3: 10 mondi animati, effetti meteo, pulsanti fatti di immagini e GIF che puoi cambiare.">
+<title>Baizaman Smart Home</title>
+<meta name="description" content="Baizaman Smart Home: панель умного дома в стиле стекла. Свет, климат, безопасность, энергия и погода.">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 <link rel="stylesheet" href="assets/fonts/mdi.css">
 <style>
@@ -596,18 +596,81 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
 .app .a-maint-badge.warn { background: color-mix(in srgb, var(--warn) 20%, transparent); border-color: var(--warn); color: var(--warn); }
 .app.run .a-ico i { animation: spin 4s linear infinite; }
 
-/* ---------- meteo dinamico e AI forecast ---------- */
-.hero-weather-box { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; width: 100%; }
-.w-forecast-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.w-fc-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 99px; background: rgba(0,0,0,.32); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(8px); font-size: .8rem; font-weight: 700; color: #fff; }
-.w-fc-chip .w-tag { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; opacity: .7; }
-.w-fc-chip i { font-size: 1.15rem; color: var(--acc-text); }
-.w-fc-chip .w-pop { color: #67E8F9; font-size: .74rem; font-weight: 800; display: inline-flex; align-items: center; gap: 2px; }
-.w-ai-summary { display: flex; align-items: flex-start; gap: 8px; padding: 8px 14px; border-radius: 16px; background: color-mix(in srgb, var(--b1) 18%, rgba(0,0,0,.4)); border: 1px solid color-mix(in srgb, var(--b1) 40%, transparent); backdrop-filter: blur(10px); font-size: .82rem; font-weight: 600; line-height: 1.35; color: var(--text); }
+/* ---------- meteo: scheda in vetro (adesso e tre giorni, dati Open-Meteo o del servizio meteo di Home Assistant) ---------- */
+.weather-card { position: relative; overflow: hidden; display: grid; gap: 16px; padding: 20px; border-color: rgba(255,255,255,.16);
+  background: linear-gradient(155deg, color-mix(in srgb, var(--b1) 18%, rgba(255,255,255,.10)), rgba(255,255,255,.04) 55%, color-mix(in srgb, var(--b3) 12%, rgba(255,255,255,.04)));
+  backdrop-filter: blur(24px) saturate(1.7); -webkit-backdrop-filter: blur(24px) saturate(1.7);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--hi), inset 0 0 0 1px rgba(255,255,255,.03); }
+.weather-card::before { content: ""; position: absolute; top: -120px; right: -80px; width: 340px; height: 340px; border-radius: 50%; pointer-events: none; opacity: .55; filter: blur(14px);
+  background: radial-gradient(circle, color-mix(in srgb, var(--b3) 38%, transparent), transparent 70%); }
+:root[data-theme="light"] .weather-card { border-color: rgba(255,255,255,.9); background: linear-gradient(155deg, rgba(255,255,255,.86), rgba(255,255,255,.58) 60%, color-mix(in srgb, var(--b3) 14%, rgba(255,255,255,.6))); }
+.weather-card > * { position: relative; }
+.wc-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.wc-city { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.wc-city > i { font-size: 1.4rem; color: var(--acc-text); flex: none; }
+.wc-city b { display: block; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: -.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wc-city small { display: block; color: var(--dim); font-size: .76rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wc-actions { display: flex; align-items: center; gap: 8px; flex: none; }
+.wc-actions .icon-btn { width: 36px; height: 36px; font-size: 1.05rem; }
+.wc-badge { padding: 4px 10px; border-radius: 99px; font-size: .7rem; font-weight: 800; letter-spacing: .04em; color: var(--warn); background: color-mix(in srgb, var(--warn) 16%, transparent); border: 1px solid color-mix(in srgb, var(--warn) 38%, transparent); }
+.wc-body { display: grid; grid-template-columns: minmax(250px, 1fr) 2fr; gap: 16px; align-items: stretch; }
+.wc-now { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 16px; }
+.wc-ico { grid-row: span 2; font-size: 4rem; line-height: 1; color: var(--acc-text); filter: drop-shadow(0 6px 18px color-mix(in srgb, var(--b3) 50%, transparent)); }
+.wc-temp { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.4rem, 5vw, 3.3rem); line-height: 1; letter-spacing: -.04em; }
+.wc-cond { margin-top: 4px; color: var(--dim); font-weight: 700; font-size: .95rem; }
+.wc-facts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0 0; padding: 0; list-style: none; color: var(--dim); font-size: .8rem; font-weight: 600; }
+.wc-facts li { display: inline-flex; align-items: center; gap: 5px; }
+.wc-facts li[hidden] { display: none; }
+.wc-facts i { color: var(--acc-text); font-size: 1rem; }
+.wc-days { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.wc-day { display: grid; justify-items: center; align-content: center; gap: 6px; padding: 14px 8px; border-radius: 22px; text-align: center;
+  background: color-mix(in srgb, var(--bg) 22%, rgba(255,255,255,.07)); border: 1px solid var(--border); box-shadow: inset 0 1px 0 var(--hi);
+  transition: transform .4s var(--spring), background .25s; }
+.wc-day:hover { transform: translateY(-3px); background: color-mix(in srgb, var(--b1) 14%, rgba(255,255,255,.08)); }
+.wc-day[data-today="1"] { border-color: color-mix(in srgb, var(--b1) 55%, transparent); }
+.wc-dname { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--dim); }
+.wc-dname small { display: block; margin-top: 1px; font-size: .68rem; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--faint); }
+.wc-day > i { font-size: 2.1rem; color: var(--acc-text); }
+.wc-dtemp { display: flex; align-items: baseline; justify-content: center; gap: 8px; font-weight: 800; }
+.wc-dtemp b { font-size: 1.1rem; font-family: var(--font-display); }
+.wc-dtemp span { font-size: .86rem; color: var(--dim); }
+.wc-dtemp em { display: block; font-style: normal; font-size: .62rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); }
+.wc-dtext { min-height: 1.2em; color: var(--dim); font-size: .72rem; font-weight: 600; line-height: 1.2; }
+.wc-pop { display: inline-flex; align-items: center; gap: 2px; color: #67E8F9; font-size: .76rem; font-weight: 800; }
+:root[data-theme="light"] .wc-pop { color: #0E7490; }
+.wc-msg { display: grid; justify-items: center; gap: 10px; padding: 18px 8px; text-align: center; color: var(--dim); font-weight: 600; }
+.wc-msg > i { font-size: 2.4rem; color: var(--acc-text); }
+.wc-msg p { margin: 0; max-width: 46ch; font-size: .9rem; }
+.weather-card[data-state="error"] .wc-msg > i, .weather-card[data-state="nodata"] .wc-msg > i { color: var(--warn); }
+.wc-skel { width: min(420px, 100%); height: 64px; border-radius: 18px; background: linear-gradient(100deg, rgba(255,255,255,.05) 20%, rgba(255,255,255,.16) 50%, rgba(255,255,255,.05) 80%) 0 0 / 200% 100%; animation: wcshim 1.4s linear infinite; }
+.weather-card:not([data-state="loading"]) .wc-skel { display: none; }
+@keyframes wcshim { to { background-position: -200% 0; } }
+.wc-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; color: var(--faint); font-size: .72rem; font-weight: 600; }
+.wc-foot a { color: var(--dim); text-decoration: underline; text-underline-offset: 2px; }
+.w-ai-summary { display: flex; align-items: flex-start; gap: 8px; padding: 10px 14px; border-radius: 16px; background: color-mix(in srgb, var(--b1) 18%, rgba(255,255,255,.04)); border: 1px solid color-mix(in srgb, var(--b1) 40%, transparent); font-size: .82rem; font-weight: 600; line-height: 1.35; color: var(--text); cursor: pointer; }
 .w-ai-summary i { font-size: 1.1rem; color: #FACC15; flex: none; margin-top: 1px; }
-
-.w-fc-chip { cursor: pointer; }
-.w-fc-chip small { font-size: .74rem; opacity: .8; }
+@media (max-width: 860px) { .wc-body { grid-template-columns: 1fr; } }
+@media (max-width: 420px) {
+  .weather-card { padding: 16px; border-radius: 24px; }
+  .wc-days { grid-template-columns: 1fr; }
+  .wc-day { grid-template-columns: 1fr auto auto; justify-items: start; align-items: center; padding: 10px 14px; }
+  .wc-day > i { font-size: 1.7rem; justify-self: center; }
+  .wc-dtext { display: none; }
+  .wc-dname small { display: inline; margin-left: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .wc-skel { animation: none; } .wc-day { transition: none; } }
+/* scelta della città (pannello Stile) */
+.wx-cur { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-weight: 700; font-size: .88rem; }
+.wx-cur i { color: var(--acc-text); }
+.wx-search { display: flex; gap: 8px; }
+.wx-search input { flex: 1 1 auto; min-width: 0; padding: 11px 14px; border-radius: 14px; font: inherit; font-size: .88rem; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); }
+.wx-search input:focus { outline: 2px solid color-mix(in srgb, var(--b1) 60%, transparent); outline-offset: 1px; }
+.wx-search .btn { flex: none; padding: 11px 14px; }
+.wx-res { display: grid; gap: 6px; margin-top: 10px; }
+.wx-res button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; border-radius: 14px; cursor: pointer; text-align: left; font: inherit; font-size: .86rem; font-weight: 700; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); }
+.wx-res button small { display: block; color: var(--dim); font-weight: 600; font-size: .74rem; }
+.wx-res button:hover { border-color: var(--b1); }
+.wx-res p { margin: 0; padding: 6px 4px; color: var(--dim); font-size: .82rem; font-weight: 600; }
 
 /* ---------- stazione meteo (Ecowitt / Netatmo / fulmini) ---------- */
 .ws-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 10px; }
@@ -989,7 +1052,7 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
 <div class="scroll" id="scroll">
 <header class="topbar">
   <div class="wrap">
-    <div class="brand"><span class="logo" aria-hidden="true"></span>Aurora <em>Glass</em><span class="ver">v3</span></div>
+    <div class="brand"><span class="logo" aria-hidden="true"></span>Baizaman</div>
     <div class="status-row">
       <button type="button" class="status" id="status" aria-haspopup="dialog" aria-expanded="false" aria-controls="st-pop"><span class="dot"></span><i class="mdi mdi-lightbulb-on-outline st-ico"></i><span id="status-text" aria-live="polite">…</span><b class="st-count" id="st-lcount">0</b><i class="mdi mdi-chevron-down st-chev"></i></button>
       <button type="button" class="status st-motion" id="st-motion" aria-haspopup="dialog" aria-expanded="false" aria-controls="st-pop"><i class="mdi mdi-motion-sensor st-ico"></i><span id="st-motion-text">Nessun movimento</span><b class="st-count" id="st-mcount">0</b><i class="mdi mdi-chevron-down st-chev"></i></button>
@@ -1017,7 +1080,6 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
     <button class="hint" id="hint-edit" type="button"><i class="mdi mdi-image-edit"></i>Modifica le immagini</button>
     <button class="hint home-edit" type="button" data-home="rooms"><i class="mdi mdi-home-edit-outline"></i>Stanze e dispositivi</button>
     <button class="hint danger" id="sim-alarm" type="button" data-demo><i class="mdi mdi-bell-ring"></i>Simula intrusione</button>
-    <a class="hint guide" href="/progetti/aurora-glass-v3?utm_source=demo&amp;utm_medium=referral&amp;utm_campaign=aurora-glass&amp;utm_content=hint" data-demo><i class="mdi mdi-book-open-variant"></i>Guida e installazione</a>
   </div>
 
   <main id="main">
@@ -1032,36 +1094,49 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
         <button class="hero-tag" id="hero-tag" type="button"><i class="mdi mdi-earth"></i><span id="hero-tag-text">Casetta</span><i class="mdi mdi-chevron-right"></i></button>
         <div class="hero-body">
           <p class="eyebrow" id="date-text">Lunedì 12 ottobre</p>
-          <h1 class="greet" id="greet">Buonasera, Alex</h1>
           <div class="clock" id="clock" aria-live="off">21<span class="colon">:</span>00</div>
           <div class="hero-chips">
             <span class="chip" id="chip-temp" role="button" tabindex="0" title="Apri dettagli stazione meteo" style="cursor:pointer"><i class="mdi mdi-weather-partly-cloudy" id="temp-ico"></i>Esterno <b id="temp-val">21,4 °C</b></span>
             <span class="chip" id="chip-power" role="button" tabindex="0" title="Apri i consumi" style="cursor:pointer"><i class="mdi mdi-flash bolt"></i>Consumo <b id="power-val">612 W</b><span class="pdelta" id="power-delta"></span><span class="livedot" title="Aggiornamento in tempo reale"></span></span>
             <span class="chip"><i class="mdi mdi-motion-sensor"></i><span id="hero-motion">Casa tranquilla</span></span>
           </div>
-          <!-- Previsioni dinamiche e frase AI -->
-          <div class="hero-weather-box" id="hero-weather-box" hidden>
-            <div class="w-forecast-row" id="w-forecast-row">
-              <div class="w-fc-chip" id="w-fc-today">
-                <span class="w-tag">Oggi</span>
-                <i class="mdi mdi-weather-partly-cloudy" id="w-fc-today-ico"></i>
-                <span class="w-temp"><b id="w-fc-today-max">--</b> / <small id="w-fc-today-min">--</small></span>
-                <span class="w-pop" id="w-fc-today-pop" hidden><i class="mdi mdi-water-percent"></i><span id="w-fc-today-pop-val">--%</span></span>
-              </div>
-              <div class="w-fc-chip" id="w-fc-tomorrow">
-                <span class="w-tag">Domani</span>
-                <i class="mdi mdi-weather-partly-cloudy" id="w-fc-tomorrow-ico"></i>
-                <span class="w-temp"><b id="w-fc-tomorrow-max">--</b> / <small id="w-fc-tomorrow-min">--</small></span>
-                <span class="w-pop" id="w-fc-tomorrow-pop" hidden><i class="mdi mdi-water-percent"></i><span id="w-fc-tomorrow-pop-val">--%</span></span>
-              </div>
-            </div>
-            <div class="w-ai-summary" id="w-ai-summary" hidden>
-              <i class="mdi mdi-creation"></i>
-              <span id="w-ai-text">Previsione meteo del giorno…</span>
-            </div>
-          </div>
         </div>
       </article>
+
+      <!-- Meteo: adesso e tre giorni (Open-Meteo tramite Home Assistant) -->
+      <div style="--i:.5" id="weather-wrap">
+        <h2 class="sec-title">Meteo <small id="wc-sub">oggi e i prossimi giorni</small></h2>
+        <article class="card weather-card" id="weather-card" data-state="loading" aria-live="polite">
+          <header class="wc-top">
+            <div class="wc-city"><i class="mdi mdi-map-marker-outline"></i><span><b id="wc-city">Астана</b><small id="wc-country">Казахстан</small></span></div>
+            <div class="wc-actions">
+              <span class="wc-badge" id="wc-badge" hidden>Dati non aggiornati</span>
+              <button class="icon-btn" id="wc-refresh" type="button" aria-label="Aggiorna il meteo" title="Aggiorna il meteo" hidden><i class="mdi mdi-refresh"></i></button>
+              <button class="icon-btn" id="wc-city-btn" type="button" aria-label="Cambia città" title="Cambia città" hidden><i class="mdi mdi-city-variant-outline"></i></button>
+            </div>
+          </header>
+          <div class="wc-msg" id="wc-msg">
+            <i class="mdi mdi-cloud-sync-outline" id="wc-msg-ico"></i>
+            <p id="wc-msg-text">Carico il meteo…</p>
+            <div class="wc-skel"></div>
+            <button class="btn ghost" id="wc-retry" type="button" hidden><i class="mdi mdi-refresh"></i>Riprova</button>
+          </div>
+          <div class="wc-body" id="wc-body" hidden>
+            <div class="wc-now">
+              <i class="mdi mdi-weather-partly-cloudy wc-ico" id="wc-ico"></i>
+              <div><div class="wc-temp" id="wc-temp">--°</div><div class="wc-cond" id="wc-cond"></div></div>
+              <ul class="wc-facts">
+                <li id="wc-feels" hidden><i class="mdi mdi-thermometer"></i><span></span></li>
+                <li id="wc-hum" hidden><i class="mdi mdi-water-percent"></i><span></span></li>
+                <li id="wc-wind" hidden><i class="mdi mdi-weather-windy"></i><span></span></li>
+              </ul>
+            </div>
+            <div class="wc-days" id="wc-days"></div>
+          </div>
+          <div class="w-ai-summary" id="w-ai-summary" hidden><i class="mdi mdi-creation"></i><span id="w-ai-text"></span></div>
+          <footer class="wc-foot"><span id="wc-source">Dati: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a></span><span id="wc-updated"></span></footer>
+        </article>
+      </div>
 
       <div style="--i:1">
         <h2 class="sec-title">Scene rapide <small>un tocco, tutta la casa</small><button class="sec-edit home-edit" type="button" data-home="scenes"><i class="mdi mdi-pencil"></i>Modifica</button></h2>
@@ -1300,7 +1375,7 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
       </div>
     </section>
 
-    <footer class="note">Aurora Glass v3 · anteprima: non riflette dati reali di un impianto. <a href="/progetti/aurora-glass-v3?utm_source=demo&amp;utm_medium=referral&amp;utm_campaign=aurora-glass&amp;utm_content=footer" data-demo>Guida completa e installazione</a></footer>
+    <footer class="note"><span data-demo>Baizaman Smart Home · anteprima: non riflette dati reali di un impianto. </span>Basato su <a href="https://github.com/lucalux00/aurora-glass" target="_blank" rel="noopener">Aurora Glass</a> · GPL-3.0</footer>
   </main>
 </div>
 
@@ -1343,6 +1418,11 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
     </section>
     <section class="dr-sec"><h3><i class="mdi mdi-robot-vacuum"></i>Modello Robot</h3>
       <div class="segm" id="robot-style"><button type="button" data-v="roborock" aria-pressed="true">Roborock</button><button type="button" data-v="dreame" aria-pressed="false">Dreame</button><button type="button" data-v="roomba" aria-pressed="false">Roomba</button><button type="button" data-v="mower" aria-pressed="false">Tagliaerba</button></div>
+    </section>
+    <section class="dr-sec" id="wx-set" hidden><h3><i class="mdi mdi-map-marker-radius-outline"></i>Città del meteo <small>previsioni Open-Meteo</small></h3>
+      <p class="wx-cur"><i class="mdi mdi-map-marker-outline"></i><span id="wx-cur">Астана, Казахстан</span></p>
+      <form class="wx-search" id="wx-form" autocomplete="off"><input type="search" id="wx-q" maxlength="60" placeholder="Cerca una città" aria-label="Cerca una città"><button class="btn" type="submit"><i class="mdi mdi-magnify"></i>Cerca</button></form>
+      <div class="wx-res" id="wx-res" aria-live="polite"></div>
     </section>
     <section class="dr-sec home-edit"><h3><i class="mdi mdi-home-edit-outline"></i>Casa <small>stanze, luci, sensori, clima ed energia</small></h3>
       <button class="btn wide" type="button" data-home="rooms"><i class="mdi mdi-home-edit-outline"></i>Stanze e dispositivi</button>
@@ -1440,7 +1520,7 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
 <script src="js/stanze-dispositivi.js"></script>
 <script src="js/aurora-app.js"></script>
 <script>
-  window.AURORA = new AuroraApp({ root: document, host: document.documentElement, layer: document.getElementById("shell"), scroll: window, assets: "assets/btn/", live: false, lang: new URLSearchParams(location.search).get("lang") || "it" });
+  window.AURORA = new AuroraApp({ root: document, host: document.documentElement, layer: document.getElementById("shell"), scroll: window, assets: "assets/btn/", live: false, lang: new URLSearchParams(location.search).get("lang") || "ru" });
 </script>
 </body>
 </html>
