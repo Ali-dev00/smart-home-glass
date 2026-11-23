@@ -485,6 +485,17 @@
     "Pioviggine intensa": "Сильная морось", "Pioggia gelata": "Ледяной дождь", "Pioggia debole": "Небольшой дождь", "Pioggia forte": "Сильный дождь", "Neve debole": "Небольшой снег", "Neve forte": "Сильный снег",
     "Granelli di neve": "Снежная крупа", "Rovesci": "Ливни", "Rovesci violenti": "Сильные ливни", "Rovesci di neve": "Снегопады", "Temporale con grandine": "Гроза с градом"
   };
+  /* il meteo reale muove l'animazione */
+  EN["Il meteo reale muove l'animazione"] = "Real weather drives the animation";
+  EN["Pioggia, neve, temporale e nebbia compaiono da soli, giorno e notte"] = "Rain, snow, thunderstorms and fog appear on their own, day and night";
+  EN["Adesso: {n}"] = "Now: {n}"; EN["Effetto scelto a mano: il meteo non si sovrappone"] = "Effect picked by hand: the weather is not layered on top";
+  EN["Adesso nessun effetto: niente precipitazioni"] = "No effect right now: no precipitation";
+  EN["L'animazione segue il meteo"] = "The animation now follows the weather"; EN["L'animazione non dipende più dal meteo"] = "The animation no longer depends on the weather";
+  RU["Il meteo reale muove l'animazione"] = "Погода влияет на анимацию";
+  RU["Pioggia, neve, temporale e nebbia compaiono da soli, giorno e notte"] = "Дождь, снег, гроза и туман накладываются сами, днём и ночью";
+  RU["Adesso: {n}"] = "Сейчас: {n}"; RU["Effetto scelto a mano: il meteo non si sovrappone"] = "Выбран эффект вручную: погода не накладывается";
+  RU["Adesso nessun effetto: niente precipitazioni"] = "Сейчас эффекта нет: осадков нет";
+  RU["L'animazione segue il meteo"] = "Анимация следует за погодой"; RU["L'animazione non dipende più dal meteo"] = "Анимация больше не зависит от погоды";
   var DICT = { en: EN, ru: RU };
 
   /* "auto" o vuoto: la lingua di Home Assistant (o del browser). Russo e italiano hanno il loro dizionario,

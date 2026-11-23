@@ -939,7 +939,7 @@
     $("#code-in").addEventListener("keydown", function (e) { if (e.key === "Enter") $("#code-ok").click(); });
 
     /* ------------------------------------------------------------------ mondo + ora del giorno */
-    var S = { world: store("world") || "casetta", fx: store("fx") || "none", fxPage: store("fxpage") === "1", cycle: false, btn: CFG.button_style || store("btn") || "img" };
+    var S = { world: store("world") || "casetta", fx: store("fx") || "none", fxPage: store("fxpage") === "1", wxFx: store("wxfx") !== "0", cycle: false, btn: CFG.button_style || store("btn") || "img" };
     /* un mondo di un pacchetto arriva dopo l'avvio: lo ricordo e lo rimetto quando il pacchetto lo registra */
     var worldWanted = AMB.W[S.world] ? null : S.world;
     if (!AMB.W[S.world]) S.world = "casetta";
@@ -995,11 +995,34 @@
     var fxHero = new FX.Fx($("#fx-hero"), { k: 1, alpha: 1, onFlash: flash });
     var fxPage = new FX.Fx($("#fx-page"), { k: .55, alpha: .6, onFlash: flash });
     function flash(a) { HOST.style.setProperty("--flash", a.toFixed(3)); }
+    /* effetto che arriva dal meteo reale: pioggia, temporale, neve o nebbia sopra il paesaggio, di giorno e di notte.
+       Vale solo se l'opzione è accesa e non hai scelto a mano un altro effetto. Si basa sul tempo di adesso
+       (Open-Meteo o, in riserva, il servizio meteo di Home Assistant); senza dati non compare niente. */
+    function wxFxFor(code) {
+      if (code === null || code === undefined) return null;
+      if (code >= 95) return "temporale";
+      if ((code >= 71 && code <= 77) || code === 85 || code === 86) return "neve";
+      if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return "pioggia";
+      if (code === 45 || code === 48) return "nebbia";
+      return null;
+    }
+    function wxEffect() {
+      if (!LIVE || !S.wxFx || !WX) return null;
+      var d = WX.data, code = null;
+      if (d && d.current && (WX.status === "ok" || WX.status === "stale") && d.fetched && Date.now() - new Date(d.fetched).getTime() < 3 * 3600 * 1000) code = d.current.code;
+      else if (WMO_HA) { var w = sv(ENT.weather); if (w && !isUnavail(w) && WMO_HA[w.state] !== undefined) code = WMO_HA[w.state]; }
+      var id = wxFxFor(code);
+      return id && FX.E[id] ? id : null;
+    }
     function applyFx() {
-      fxHero.set(S.fx); fxPage.set(S.fxPage ? S.fx : "none");
-      store("fx", S.fx); store("fxpage", S.fxPage ? "1" : "0");
+      var auto = S.fx === "none" ? wxEffect() : null, eff = auto || S.fx;
+      fxHero.set(eff); fxPage.set(S.fxPage ? eff : "none");
+      if (auto) HOST.dataset.wxfx = auto; else HOST.removeAttribute("data-wxfx");
+      store("fx", S.fx); store("fxpage", S.fxPage ? "1" : "0"); store("wxfx", S.wxFx ? "1" : "0");
       $$(".fxchip").forEach(function (c) { c.classList.toggle("sel", c.dataset.fx === S.fx); });
       $("#fx-page-toggle").setAttribute("aria-pressed", S.fxPage ? "true" : "false");
+      var wt = $("#wx-fx-toggle"); if (wt) wt.setAttribute("aria-pressed", S.wxFx ? "true" : "false");
+      var wn = $("#wx-fx-now"); if (wn) wn.textContent = !S.wxFx ? "" : auto ? T("Adesso: {n}", { n: T(FX.E[auto].name) }) : S.fx !== "none" ? T("Effetto scelto a mano: il meteo non si sovrappone") : LIVE ? T("Adesso nessun effetto: niente precipitazioni") : "";
     }
 
     /* ------------------------------------------------------------------ tema + stile pulsanti */
@@ -1037,6 +1060,7 @@
     ["style-btn", "hint-style", "dock-style", "hero-tag"].forEach(function (id) { $("#" + id).addEventListener("click", openDrawer); });
     $("#dr-close").addEventListener("click", closeDrawer); $("#scrim").addEventListener("click", closeDrawer);
     $("#fx-page-toggle").addEventListener("click", function () { S.fxPage = !S.fxPage; applyFx(); });
+    $("#wx-fx-toggle").addEventListener("click", function () { S.wxFx = !S.wxFx; applyFx(); toast(S.wxFx ? T("L'animazione segue il meteo") : T("L'animazione non dipende più dal meteo"), "mdi-weather-partly-rainy", "var(--acc-text)"); });
     var cycleT = 0;
     $("#cycle-toggle").addEventListener("click", function () {
       S.cycle = !S.cycle; this.setAttribute("aria-pressed", S.cycle ? "true" : "false"); clearInterval(cycleT);
@@ -1958,7 +1982,8 @@
           WX.data = r; WX.status = r.status; WX.error = r.error || "";
           if (wxRender(r.days, r.current, "om")) { wxSet(r.status); wxUpdated(r.fetched); }
         } else wxFail(r && r.error);
-      }).catch(function (e) { WX.busy = false; wxFail(e && (e.message || e.code)); });
+        applyFx();
+      }).catch(function (e) { WX.busy = false; wxFail(e && (e.message || e.code)); applyFx(); });
     }
     function wxFail(err) {
       WX.error = err || "";
@@ -1987,6 +2012,7 @@
         if (r && r.city) wxShowCity(r.city);
         if (r && (r.status === "ok" || r.status === "stale") && r.days) { WX.data = r; WX.status = r.status; if (wxRender(r.days, r.current, "om")) { wxSet(r.status); wxUpdated(r.fetched); } }
         else wxFail(r && r.error);
+        applyFx();
         toast(T("Città del meteo: {n}", { n: c.name }), "mdi-map-marker-check-outline", "var(--ok)");
       }).catch(function (e) { box.innerHTML = "<p>" + esc(T("Non riuscito: {e}", { e: (e && e.message) || T("errore di Home Assistant") })) + "</p>"; loadWeather(false); });
     }
@@ -2012,6 +2038,7 @@
       if (aiBox) { aiBox.hidden = !txt; if (txt) aiTxt.textContent = txt; }
       /* se Open-Meteo non risponde, la riserva segue le previsioni del servizio meteo di Home Assistant */
       if (WX.status === "error" || WX.status === "ha") { var ha = wxHaDays(); if (ha && wxRender(ha.days, ha.cur, "ha")) { WX.status = "ha"; wxSet("ok"); } }
+      if (S.wxFx && S.fx === "none" && (wxEffect() || null) !== (HOST.dataset.wxfx || null)) applyFx();
       if ($("#wsbox").classList.contains("open")) renderStation();
     }
 

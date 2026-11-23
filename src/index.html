@@ -659,6 +659,13 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
   .wc-dname small { display: inline; margin-left: 6px; }
 }
 @media (prefers-reduced-motion: reduce) { .wc-skel { animation: none; } .wc-day { transition: none; } }
+/* il meteo reale sopra il paesaggio: il cielo si vela un po' quando piove, nevica o c'è nebbia */
+.hero-art { transition: filter 1.6s ease; }
+:root[data-wxfx="pioggia"] .hero-art { filter: brightness(.8) saturate(.82); }
+:root[data-wxfx="temporale"] .hero-art { filter: brightness(.66) saturate(.78); }
+:root[data-wxfx="neve"] .hero-art { filter: brightness(.94) saturate(.8); }
+:root[data-wxfx="nebbia"] .hero-art { filter: brightness(.9) saturate(.6) contrast(.92); }
+.wx-fx-now { color: var(--acc-text) !important; }
 /* scelta della città (pannello Stile) */
 .wx-cur { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-weight: 700; font-size: .88rem; }
 .wx-cur i { color: var(--acc-text); }
@@ -1405,6 +1412,7 @@ footer.note { text-align: center; color: var(--faint); font-size: .78rem; paddin
     <section class="dr-sec"><h3><i class="mdi mdi-weather-partly-rainy"></i>Meteo ed effetti <small>si sovrappongono a qualsiasi mondo</small></h3>
       <div class="fxgrid" id="fxgrid"></div>
       <div class="row" style="margin-top:10px"><span class="grow">Anche sullo sfondo della pagina<small>Particelle dietro a tutte le card</small></span><button class="toggle" id="fx-page-toggle" type="button" aria-pressed="false" aria-label="Effetto su tutta la pagina"></button></div>
+      <div class="row" style="margin-top:10px"><span class="grow">Il meteo reale muove l'animazione<small>Pioggia, neve, temporale e nebbia compaiono da soli, giorno e notte</small><small id="wx-fx-now" class="wx-fx-now"></small></span><button class="toggle" id="wx-fx-toggle" type="button" aria-pressed="true" aria-label="Il meteo reale muove l'animazione"></button></div>
     </section>
     <section class="dr-sec"><h3><i class="mdi mdi-shuffle-variant"></i>Sorpresa</h3>
       <div class="row"><span class="grow">Cambia mondo ogni 30 secondi<small>Una playlist di paesaggi</small></span><button class="toggle" id="cycle-toggle" type="button" aria-pressed="false" aria-label="Cambia mondo automaticamente"></button></div>
