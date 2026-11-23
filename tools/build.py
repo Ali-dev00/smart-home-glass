@@ -1,4 +1,4 @@
-"""Costruisce tutto Aurora Glass partendo da src/.
+"""Costruisce tutto Baizaman partendo da src/.
 
   python tools/build.py
 
@@ -32,7 +32,7 @@ def bundle(assets: str) -> str:
     wrapper = (wrapper.replace("__CSS__", json.dumps(css)).replace("__HTML__", json.dumps(html[a:b]))
                .replace("__PROPS__", json.dumps(props)).replace("__ASSETS__", json.dumps(assets))
                .replace("__VERSION__", json.dumps(VERSION)))
-    out = f"/* Aurora Glass v{VERSION} — scheda per Home Assistant (generata da tools/build.py) */\n"
+    out = f"/* Baizaman v{VERSION} — scheda per Home Assistant (generata da tools/build.py) */\n"
     for p in PARTS:
         out += "\n/* ---- " + p + " ---- */\n" + (SRC / "js" / p).read_text(encoding="utf-8") + "\n"
     return out + "\n/* ---- scheda ---- */\n" + wrapper
@@ -68,7 +68,7 @@ def main() -> None:
         add_tree(z, ROOT / "custom_components" / "aurora_glass", f"{top}/custom_components/aurora_glass")
         z.write(ROOT / "LICENSE", f"{top}/LICENSE")
     size = (ROOT / "dist" / "aurora-v3.js").stat().st_size // 1024
-    print(f"Aurora Glass {VERSION}: scheda {size} KB, zip {zpath.stat().st_size // 1024} KB -> {zpath}")
+    print(f"Baizaman {VERSION}: scheda {size} KB, zip {zpath.stat().st_size // 1024} KB -> {zpath}")
 
 
 if __name__ == "__main__":

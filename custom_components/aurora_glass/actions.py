@@ -3,7 +3,7 @@
 Irrigazione (aurora_glass/irrigation/start|stop|list): la plancia apre l'elettrovalvola di una zona del giardino
 con una durata; il timer vive qui, non nella pagina, quindi la valvola si richiude anche a plancia chiusa e dopo
 un riavvio (le scadenze restano in .storage). Se qualcuno chiude la valvola prima, il timer si annulla.
-Si comandano solo le elettrovalvole scelte nelle zone del giardino di una plancia Aurora Glass.
+Si comandano solo le elettrovalvole scelte nelle zone del giardino di una plancia Baizaman.
 
 Foto (aurora_glass/snapshot): salva l'immagine della telecamera nella cartella Media, sottocartella aurora_glass,
 visibile da Media › Media locali.
@@ -64,7 +64,7 @@ class Irrigation:
                 self.schedule(entity_id, end)
         # scadute mentre Home Assistant era spento: si chiudono adesso
         for entity_id in expired:
-            _LOGGER.info("Aurora Glass: %s doveva chiudersi durante il riavvio, la chiudo ora", entity_id)
+            _LOGGER.info("Baizaman: %s doveva chiudersi durante il riavvio, la chiudo ora", entity_id)
             self.hass.async_create_task(self.switch(entity_id, False, quiet=True))
         if expired:
             self.save()
@@ -87,7 +87,7 @@ class Irrigation:
         except (HomeAssistantError, vol.Invalid) as err:
             if not quiet:
                 raise
-            _LOGGER.warning("Aurora Glass: non riesco a chiudere %s: %s", entity_id, err)
+            _LOGGER.warning("Baizaman: non riesco a chiudere %s: %s", entity_id, err)
 
     def schedule(self, entity_id: str, end: datetime) -> None:
         self.unschedule(entity_id)
@@ -99,7 +99,7 @@ class Irrigation:
             self.ends.pop(entity_id, None)
             self._track()
             self.save()
-            _LOGGER.debug("Aurora Glass: tempo scaduto, chiudo %s", entity_id)
+            _LOGGER.debug("Baizaman: tempo scaduto, chiudo %s", entity_id)
             self.hass.async_create_task(self.switch(entity_id, False, quiet=True))
 
         self._cancel[entity_id] = async_track_point_in_utc_time(self.hass, _fire, end)
@@ -148,7 +148,7 @@ def _irrigation(hass: HomeAssistant) -> Irrigation:
 async def ws_irrigation_start(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     irr, entity_id = _irrigation(hass), msg["entity_id"]
     if not irr.is_zone(entity_id):
-        connection.send_error(msg["id"], "not_a_zone", f"{entity_id} is not a garden zone of Aurora Glass")
+        connection.send_error(msg["id"], "not_a_zone", f"{entity_id} is not a garden zone of Baizaman")
         return
     try:
         await irr.switch(entity_id, True, connection.context(msg))
@@ -166,7 +166,7 @@ async def ws_irrigation_start(hass: HomeAssistant, connection: websocket_api.Act
 async def ws_irrigation_stop(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     irr, entity_id = _irrigation(hass), msg["entity_id"]
     if not irr.is_zone(entity_id):
-        connection.send_error(msg["id"], "not_a_zone", f"{entity_id} is not a garden zone of Aurora Glass")
+        connection.send_error(msg["id"], "not_a_zone", f"{entity_id} is not a garden zone of Baizaman")
         return
     irr.unschedule(entity_id)
     irr._track()

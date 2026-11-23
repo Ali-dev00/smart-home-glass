@@ -1,7 +1,7 @@
 """Stanze e dispositivi cambiati dalla plancia (finestra «Stanze e dispositivi», solo amministratori).
 
 La plancia legge le scelte salvate con aurora_glass/config e le riscrive con aurora_glass/config/save:
-sono le stesse opzioni di Impostazioni → Aurora Glass → Configura, quindi dopo il salvataggio la pagina
+sono le stesse opzioni di Impostazioni → Baizaman → Configura, quindi dopo il salvataggio la pagina
 viene registrata di nuovo (vedi _async_updated in __init__.py) e tutti i dispositivi vedono la versione nuova.
 """
 
@@ -93,7 +93,7 @@ def _entry(hass: HomeAssistant, entry_id: str) -> ConfigEntry | None:
 def ws_config(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     entry = _entry(hass, msg["entry_id"])
     if entry is None:
-        connection.send_error(msg["id"], websocket_api.ERR_NOT_FOUND, "Aurora Glass entry not found")
+        connection.send_error(msg["id"], websocket_api.ERR_NOT_FOUND, "Baizaman entry not found")
         return
     devices = dict(entry.options.get(CONF_DEVICES, {}))
     devices["climate"] = as_list(devices.get("climate"))
@@ -120,7 +120,7 @@ def ws_config(hass: HomeAssistant, connection: websocket_api.ActiveConnection, m
 def ws_config_save(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     entry = _entry(hass, msg["entry_id"])
     if entry is None:
-        connection.send_error(msg["id"], websocket_api.ERR_NOT_FOUND, "Aurora Glass entry not found")
+        connection.send_error(msg["id"], websocket_api.ERR_NOT_FOUND, "Baizaman entry not found")
         return
     if not msg["rooms"] or len(msg["rooms"]) > MAX_ROOMS:
         connection.send_error(msg["id"], websocket_api.ERR_INVALID_FORMAT, f"between 1 and {MAX_ROOMS} rooms")

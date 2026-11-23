@@ -1,7 +1,7 @@
-"""Procedura guidata di Aurora Glass: nome e lingua, stanze, dispositivi, scene.
+"""Procedura guidata di Baizaman: nome e lingua, stanze, dispositivi, scene.
 
 Le stesse schermate servono alla prima configurazione (ConfigFlow) e per cambiare
-tutto in seguito da Impostazioni → Dispositivi e servizi → Aurora Glass → Configura (OptionsFlow).
+tutto in seguito da Impostazioni → Dispositivi e servizi → Baizaman → Configura (OptionsFlow).
 """
 
 from __future__ import annotations
@@ -300,7 +300,7 @@ class AuroraGlassConfigFlow(AuroraFlowSteps, ConfigFlow, domain=DOMAIN):
         return self.async_show_form(step_id="user", data_schema=self._general_schema(), last_step=False)
 
     async def async_step_zeroconf(self, discovery_info: Any) -> ConfigFlowResult:
-        """Dopo l'installazione da HACS (o dal Marketplace) e il riavvio: Home Assistant trova sé stesso in rete e propone Aurora Glass.
+        """Dopo l'installazione da HACS (o dal Marketplace) e il riavvio: Home Assistant trova sé stesso in rete e propone Baizaman.
 
         Si risponde solo all'annuncio di questa istanza (stesso uuid) e solo se non c'è ancora nessuna plancia.
         """

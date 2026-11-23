@@ -1,10 +1,10 @@
-"""Pacchetti di Aurora Glass: catalogo, scaricamento, attivazione, rimozione e dati.
+"""Pacchetti di Baizaman: catalogo, scaricamento, attivazione, rimozione e dati.
 
 Un pacchetto è uno zip con pack.json (id, nome, versione, glass_minima) e pack.js, più
 eventuali stili e immagini. Si scarica dal catalogo (catalogo.json), si controlla con lo
 sha256 scritto nel catalogo e finisce in /config/aurora_glass/pacchetti/<id>/.
 I pacchetti attivi vengono caricati in tutte le pagine di Home Assistant (come la scheda)
-e si agganciano da soli alle plance Aurora aperte.
+e si agganciano da soli alle plance Baizaman aperte.
 
 Catalogo: quello pubblicato su domotikpro.it (i pacchetti passano dal sito). Se esiste /config/aurora_glass/catalogo.json si usa
 quello (installazione senza internet, prove dei pacchetti nuovi).
@@ -64,7 +64,7 @@ MSG = {
         "too_big": "Il pacchetto «{n}» è troppo grande.",
         "checksum": "Il file di «{n}» non corrisponde a quello del catalogo: non lo installo.",
         "zip": "Il pacchetto «{n}» non è valido ({e}).",
-        "glass": "«{n}» richiede Aurora Glass {v} o più recente: aggiorna prima Aurora Glass dal Marketplace (o da HACS).",
+        "glass": "«{n}» richiede Baizaman {v} o più recente: aggiorna prima Baizaman dal Marketplace (o da HACS).",
         "needs_key": "«{n}» è a pagamento ({p}): acquistalo su domotikpro.it, poi inserisci la chiave in Configura → Chiavi di licenza.",
         "needs_gift": "«{n}» è un regalo per chi si iscrive alla newsletter di DomotikPro: iscriviti su domotikpro.it/progetti/aurora-glass-pacchetti, poi inserisci la chiave che ti arriva per email in Configura → Chiavi di licenza.",
         "key_format": "La chiave non sembra valida: copiala intera dalla mail.",
@@ -79,7 +79,7 @@ MSG = {
         "too_big": "The pack “{n}” is too large.",
         "checksum": "The file of “{n}” doesn't match the catalog: not installing it.",
         "zip": "The pack “{n}” is not valid ({e}).",
-        "glass": "“{n}” needs Aurora Glass {v} or newer: update Aurora Glass from the Marketplace (or HACS) first.",
+        "glass": "“{n}” needs Baizaman {v} or newer: update Baizaman from the Marketplace (or HACS) first.",
         "needs_key": "“{n}” is a paid pack ({p}): buy it on domotikpro.it, then enter the key in Configure → License keys.",
         "needs_gift": "“{n}” is a gift for DomotikPro newsletter subscribers: sign up at domotikpro.it/progetti/aurora-glass-pacchetti, then enter the key from the email in Configure → License keys.",
         "key_format": "This doesn't look like a valid key: copy it in full from the email.",
@@ -154,7 +154,7 @@ class PackManager:
             if await self.hass.async_add_executor_job((self.dir / pid / "pack.js").is_file):
                 self._activate(pid, info.get("version", "0"))
             else:
-                _LOGGER.warning("Aurora Glass: il pacchetto %s non ha più i suoi file, lo tolgo dall'elenco", pid)
+                _LOGGER.warning("Baizaman: il pacchetto %s non ha più i suoi file, lo tolgo dall'elenco", pid)
                 self.installed.pop(pid)
                 await self._save()
 
@@ -167,7 +167,7 @@ class PackManager:
         url = f"{PACKS_URL}/{pid}/pack.js?v={version}"
         frontend.add_extra_js_url(self.hass, url)
         self._urls[pid] = url
-        _LOGGER.debug("Aurora Glass: pacchetto %s %s attivo", pid, version)
+        _LOGGER.debug("Baizaman: pacchetto %s %s attivo", pid, version)
 
     @callback
     def _deactivate(self, pid: str) -> None:
@@ -224,7 +224,7 @@ class PackManager:
             self.installed[pid] = {"version": info.get("versione") or entry.get("versione") or "0", "name": name}
             await self._save()
             self._activate(pid, self.installed[pid]["version"])
-            _LOGGER.info("Aurora Glass: installato il pacchetto %s %s", pid, self.installed[pid]["version"])
+            _LOGGER.info("Baizaman: installato il pacchetto %s %s", pid, self.installed[pid]["version"])
 
     # ------------------------------------------------------------------ licenze
     def license_for(self, pid: str) -> dict[str, Any] | None:
@@ -285,7 +285,7 @@ class PackManager:
         }
         self.licenses.append(lic)
         await self._license_store.async_save({"licenses": self.licenses})
-        _LOGGER.info("Aurora Glass: chiave di licenza attivata (%s)", lic["display"])
+        _LOGGER.info("Baizaman: chiave di licenza attivata (%s)", lic["display"])
         return lic
 
     async def async_remove_license(self, key: str) -> None:
@@ -297,7 +297,7 @@ class PackManager:
         try:
             await self._shop(self.license_url, {"azione": "togli", "chiave": key, "attivazione": lic.get("activation", "")})
         except PackError as err:
-            _LOGGER.warning("Aurora Glass: non riesco a liberare l'attivazione sul negozio: %s", err)
+            _LOGGER.warning("Baizaman: non riesco a liberare l'attivazione sul negozio: %s", err)
         self.licenses = [x for x in self.licenses if x["key"] != key]
         await self._license_store.async_save({"licenses": self.licenses})
 
@@ -388,7 +388,7 @@ class PackManager:
             self.installed.pop(pid, None)
             await self._save()
             await self.hass.async_add_executor_job(shutil.rmtree, self.dir / pid, True)
-            _LOGGER.info("Aurora Glass: tolto il pacchetto %s", pid)
+            _LOGGER.info("Baizaman: tolto il pacchetto %s", pid)
 
     # ------------------------------------------------------------------ dati dei pacchetti
     @callback

@@ -181,7 +181,7 @@
       },
       "packs": {
         "title": "Pacchetti",
-        "description": "{status}\n\nSpunta un pacchetto per scaricarlo e attivarlo, togli la spunta per rimuoverlo. Sono facoltativi: Baizaman Smart Home funziona uguale anche senza. Un pacchetto aggiunge funzioni a tutte le plance Aurora (per esempio una vista in più nel dock).\n\n[Scopri i pacchetti su domotikpro.it]({packs_url})",
+        "description": "{status}\n\nSpunta un pacchetto per scaricarlo e attivarlo, togli la spunta per rimuoverlo. Sono facoltativi: Baizaman Smart Home funziona uguale anche senza. Un pacchetto aggiunge funzioni a tutte le plance Baizaman (per esempio una vista in più nel dock).\n\n[Scopri i pacchetti su domotikpro.it]({packs_url})",
         "data": {
           "packs": "Pacchetti"
         }

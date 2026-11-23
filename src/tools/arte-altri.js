@@ -1,4 +1,4 @@
-/* AURORA GLASS v3 — scene, sensori, allarme.
+/* BAIZAMAN v3 — scene, sensori, allarme.
    ART[k].out: 'pair' = k_off.png + k_on.gif · 'png' = k.png · 'gif' = k.gif */
 (function () {
   var A = AR, ART = A.ART;

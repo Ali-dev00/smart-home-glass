@@ -1,4 +1,4 @@
-AURORA GLASS v3 per Home Assistant
+BAIZAMAN v3 per Home Assistant
 ==================================
 La plancia animata: cielo che segue l'ora, 10 mondi, 11 effetti meteo, pulsanti
 fatti di immagini e GIF, allarme, clima, telecamere ed energia con i costi.
@@ -12,7 +12,7 @@ METODO A - INSTALLAZIONE GUIDATA (consigliato)
 Con HACS:
   1) HACS -> menu (tre puntini) -> Archivi digitali personalizzati
      Archivio:  https://github.com/lucalux00/aurora-glass    Tipo: Integrazione
-  2) Cerca "Aurora Glass" -> Scarica.
+  2) Cerca "Baizaman" -> Scarica.
   3) Riavvia Home Assistant (Impostazioni -> Sistema -> menu in alto a destra -> Riavvia).
 
 Senza HACS:
@@ -23,10 +23,10 @@ Senza HACS:
 
 Dopo il riavvio:
   4) Home Assistant la trova da solo: compare una notifica e in Impostazioni ->
-     Dispositivi e servizi, in alto, c'e' "Aurora Glass" tra le integrazioni rilevate.
+     Dispositivi e servizi, in alto, c'e' "Baizaman" tra le integrazioni rilevate.
      Premi "Aggiungi".
      (Se non la vedi: Impostazioni -> Dispositivi e servizi -> Aggiungi integrazione ->
-     cerca "Aurora Glass".)
+     cerca "Baizaman".)
   5) La procedura guidata ti chiede, una schermata alla volta:
        - il nome della plancia, l'icona e la lingua (automatica, italiano, inglese)
        - le stanze: propone le aree di Home Assistant che hanno delle luci. Per ogni
@@ -40,7 +40,7 @@ Dopo il riavvio:
        - cosa accendono le scene Buongiorno, Cinema e Cena
   6) Fine: a sinistra compare la voce con il nome che hai scelto. Aprila.
 
-Per cambiare qualcosa dopo: Impostazioni -> Dispositivi e servizi -> Aurora Glass ->
+Per cambiare qualcosa dopo: Impostazioni -> Dispositivi e servizi -> Baizaman ->
 Configura (nome e lingua, stanze, dispositivi, scene). La plancia si aggiorna da sola.
 Per avere piu' plance (per esempio una per il tablet di camera): Aggiungi servizio.
 
@@ -56,7 +56,7 @@ METODO B - A MANO CON YAML
      Aggiungi risorsa.  URL: /local/aurora-v3/aurora-v3.js?v=1   Tipo: Modulo JavaScript
      (quando aggiorni la scheda, alza il numero dopo ?v=)
   3) CREA LA PLANCIA: Impostazioni -> Plance -> Aggiungi plancia -> Nuova plancia da zero.
-     Titolo "Aurora", icona mdi:home-heart, "Mostra nella barra laterale".
+     Titolo "Baizaman", icona mdi:home-heart, "Mostra nella barra laterale".
   4) INCOLLA LA SCHEDA: apri la plancia -> matita -> menu -> "Editor di configurazione
      testuale" -> cancella tutto e incolla  dashboard-esempio.yaml  -> Salva.
   5) LE TUE STANZE: in dashboard-esempio.yaml cambia la sezione  rooms:  con i nomi
@@ -80,11 +80,11 @@ PRIVACY
  Nessun dato viene raccolto o inviato.
 
 RIMUOVERE
- Metodo A: Impostazioni -> Dispositivi e servizi -> Aurora Glass -> Elimina, poi
+ Metodo A: Impostazioni -> Dispositivi e servizi -> Baizaman -> Elimina, poi
  rimuovi l'integrazione da HACS (o la cartella custom_components/aurora_glass).
  Metodo B: elimina la plancia, la risorsa e la cartella www/aurora-v3.
 
 Licenza GPL-3.0: puoi usare, modificare e condividere la scheda, anche a scopo
 commerciale, purche' le versioni modificate restino GPL-3.0, con il codice sorgente
-e un nome diverso da "Aurora Glass". Vedi LICENSE.
+e un nome diverso da "Baizaman". Vedi LICENSE.
 (c) 2026 DomotikPro.it (Luca Pinelli) - https://domotikpro.it/progetti/aurora-glass-v3

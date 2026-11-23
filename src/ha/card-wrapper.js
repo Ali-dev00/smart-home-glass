@@ -1,8 +1,8 @@
 /* ============================================================================
-   AURORA GLASS v3 — scheda personalizzata per Home Assistant
+   BAIZAMAN v3 — scheda personalizzata per Home Assistant
    <aurora-v3-card> : una scheda a tutta pagina (usala in una vista "panel").
    <aurora-glass-panel> : la stessa scheda come pagina della barra laterale
-                          (la registra l'integrazione Aurora Glass).
+                          (la registra l'integrazione Baizaman).
    Config facoltativa (YAML):
      type: custom:aurora-v3-card
      language: auto                       # auto (lingua di Home Assistant), it, en
@@ -138,5 +138,5 @@
 
   window.customCards = window.customCards || [];
   window.customCards.push({ type: "aurora-glass-card", name: "Baizaman Smart Home", description: "Smart home dashboard in glassmorphism style: worlds, weather forecast and buttons made of images and GIFs." });
-  console.info("%c AURORA GLASS v3 %c card loaded ", "background:#7C5CFF;color:#fff;border-radius:4px 0 0 4px;padding:2px 6px", "background:#1b1740;color:#fff;border-radius:0 4px 4px 0;padding:2px 6px");
+  console.info("%c BAIZAMAN v3 %c card loaded ", "background:#7C5CFF;color:#fff;border-radius:4px 0 0 4px;padding:2px 6px", "background:#1b1740;color:#fff;border-radius:0 4px 4px 0;padding:2px 6px");
 })();

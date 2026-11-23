@@ -1,5 +1,5 @@
 /* ============================================================================
-   AURORA GLASS v3 — logica dell'interfaccia
+   BAIZAMAN v3 — logica dell'interfaccia
    Una sola codebase per due usi:
    · anteprima (index.html): dati finti, tutto simulato
    · scheda di Home Assistant (ha/): dati veri delle entità, servizi veri

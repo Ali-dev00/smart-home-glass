@@ -1,8 +1,8 @@
-# Aurora Glass — plancia animata per Home Assistant, con installazione guidata
+# Baizaman — plancia animata per Home Assistant, con installazione guidata
 
 🇬🇧 [Read in English](README.md)
 
-![Aurora Glass](https://raw.githubusercontent.com/lucalux00/aurora-glass/main/docs/dashboard-casa-notte-intera.webp)
+![Baizaman](https://raw.githubusercontent.com/lucalux00/aurora-glass/main/docs/dashboard-casa-notte-intera.webp)
 
 Una plancia viva: cielo, sole, luna e le finestre della casetta seguono l'ora vera, dieci mondi animati, undici effetti meteo, pulsanti fatti di immagini e GIF, allarme, clima, telecamere e una vista energia con i costi calcolati dalla tua tariffa.
 
@@ -14,12 +14,12 @@ La aggiungi dal **Marketplace** di Home Assistant (o da HACS sulle versioni più
 ## Installazione
 **Home Assistant 2026.11 o più recente** (HACS ora è integrato e si chiama Marketplace):
 1. **Impostazioni → Marketplace** → pulsante in alto a destra per aggiungere da link (*Add from link*) → scrivi `https://github.com/lucalux00/aurora-glass` → **Aggiungi**. La prima volta il Marketplace chiede di collegare GitHub (accesso dal sito di GitHub, solo lettura, nessuna password in Home Assistant). Se chiede il tipo, scegli **Integrazione**.
-2. Apri **Aurora Glass** nell'elenco → **Installa**. La procedura guidata parte subito, senza riavviare. (Se non parte: **Impostazioni → Dispositivi e servizi → Aggiungi integrazione → Aurora Glass**.)
+2. Apri **Baizaman** nell'elenco → **Installa**. La procedura guidata parte subito, senza riavviare. (Se non parte: **Impostazioni → Dispositivi e servizi → Aggiungi integrazione → Baizaman**.)
 
 **Versioni più vecchie, con HACS:**
-1. **HACS** → ⋮ → *Archivi digitali personalizzati* → aggiungi `https://github.com/lucalux00/aurora-glass`, tipo **Integrazione** → cerca **Aurora Glass** → *Scarica*.
+1. **HACS** → ⋮ → *Archivi digitali personalizzati* → aggiungi `https://github.com/lucalux00/aurora-glass`, tipo **Integrazione** → cerca **Baizaman** → *Scarica*.
 2. **Riavvia** Home Assistant.
-3. Home Assistant trova Aurora Glass da solo: in **Impostazioni → Dispositivi e servizi** compare tra le integrazioni rilevate → **Aggiungi**. (Oppure *Aggiungi integrazione* → *Aurora Glass*.)
+3. Home Assistant trova Baizaman da solo: in **Impostazioni → Dispositivi e servizi** compare tra le integrazioni rilevate → **Aggiungi**. (Oppure *Aggiungi integrazione* → *Baizaman*.)
 
 L'avevi già installata con HACS? Con l'aggiornamento alla 2026.11 passa da sola al Marketplace: non devi fare niente e gli aggiornamenti continuano ad arrivare (li trovi in **Impostazioni → Aggiornamenti**).
 
@@ -32,7 +32,7 @@ L'avevi già installata con HACS? Con l'aggiornamento alla 2026.11 passa da sola
 
 A sinistra compare la nuova voce. Fatto.
 
-Per cambiare qualcosa dopo basta la plancia: **Stanze e dispositivi** (o *Modifica* accanto a ogni sezione, solo per gli amministratori) per rinominare le stanze, cambiare immagine, aggiungere o togliere luci, sensori, climatizzatori ed elettrodomestici. Le stesse scelte sono anche in **Impostazioni → Dispositivi e servizi → Aurora Glass → Configura**. Ti serve una seconda plancia (per esempio per il tablet a muro)? *Aggiungi servizio*.
+Per cambiare qualcosa dopo basta la plancia: **Stanze e dispositivi** (o *Modifica* accanto a ogni sezione, solo per gli amministratori) per rinominare le stanze, cambiare immagine, aggiungere o togliere luci, sensori, climatizzatori ed elettrodomestici. Le stesse scelte sono anche in **Impostazioni → Dispositivi e servizi → Baizaman → Configura**. Ti serve una seconda plancia (per esempio per il tablet a muro)? *Aggiungi servizio*.
 
 Senza Marketplace né HACS: copia `custom_components/aurora_glass` nella cartella di configurazione e riavvia. Il [pacchetto da scaricare](https://domotikpro.it/progetti/aurora-glass-v3?utm_source=github&utm_medium=readme&utm_campaign=aurora-glass&utm_content=package) contiene anche la cartella `italiano/` con la guida passo passo e gli esempi YAML per l'installazione a mano (e la cartella `english/`).
 
@@ -50,13 +50,13 @@ Senza Marketplace né HACS: copia `custom_components/aurora_glass` nella cartell
 - **Privacy:** tutto in locale. L'unica richiesta esterna sono i font Google (Manrope, Sora).
 
 ## Pacchetti facoltativi
-Funzioni in più da aggiungere e togliere quando vuoi: **Impostazioni → Dispositivi e servizi → Aurora Glass → Configura → Pacchetti**. Spunta per scaricare e attivare, togli la spunta per rimuovere, poi ricarica la pagina del browser. Non viene scaricato niente finché non spunti qualcosa, e Aurora Glass funziona uguale anche senza pacchetti.
+Funzioni in più da aggiungere e togliere quando vuoi: **Impostazioni → Dispositivi e servizi → Baizaman → Configura → Pacchetti**. Spunta per scaricare e attivare, togli la spunta per rimuovere, poi ricarica la pagina del browser. Non viene scaricato niente finché non spunti qualcosa, e Baizaman funziona uguale anche senza pacchetti.
 
 - **Regia**: pad delle scene animati, dissolvenza A ⇄ B tra due scene, REC per salvare le luci come nuovo pad, luminosità e colore per stanza. [Provala dal vivo](https://domotikpro.it/aurora-glass-pacchetti-demo/index.html?vista=regia&utm_source=github&utm_medium=readme&utm_campaign=aurora-glass-pacchetti)
 
 Elenco e file dei pacchetti arrivano da [domotikpro.it](https://domotikpro.it/progetti/aurora-glass-pacchetti?utm_source=github&utm_medium=readme&utm_campaign=aurora-glass-pacchetti); ogni file viene controllato con lo SHA-256 dell'elenco prima di installarlo. Nessun dato della tua casa viene inviato.
 
-**Pacchetti con chiave** (dalla 3.7.0): i pacchetti in più (temi Atelier, salvaschermo Cornice, mondi italiani, feste dell'anno, icone vive) sono un regalo per chi si iscrive alla newsletter di DomotikPro. Ti iscrivi dalla [pagina dei pacchetti](https://domotikpro.it/progetti/aurora-glass-pacchetti) e la chiave arriva nella mail di benvenuto; la incolli in **Configura → Chiavi di licenza** e poi spunti i pacchetti in Pacchetti. Aurora Glass resta gratis e open source. A domotikpro.it arrivano solo la chiave e un'impronta anonima dell'installazione, mai i dati della casa.
+**Pacchetti con chiave** (dalla 3.7.0): i pacchetti in più (temi Atelier, salvaschermo Cornice, mondi italiani, feste dell'anno, icone vive) sono un regalo per chi si iscrive alla newsletter di DomotikPro. Ti iscrivi dalla [pagina dei pacchetti](https://domotikpro.it/progetti/aurora-glass-pacchetti) e la chiave arriva nella mail di benvenuto; la incolli in **Configura → Chiavi di licenza** e poi spunti i pacchetti in Pacchetti. Baizaman resta gratis e open source. A domotikpro.it arrivano solo la chiave e un'impronta anonima dell'installazione, mai i dati della casa.
 
 ## La scheda nelle tue plance
 L'integrazione carica la scheda ovunque, quindi puoi usarla in qualsiasi plancia (meglio in una vista a pannello):
@@ -88,20 +88,20 @@ Tutte le opzioni sono in [`package/italiano/scheda-esempio.yaml`](package/italia
 - *Costi a zero* — nella vista Energia tocca la barra *Tariffa* e scrivi quanto paghi un kWh.
 
 ## Rimuovere
-Impostazioni → Dispositivi e servizi → Aurora Glass → Elimina, poi disinstallala dal Marketplace (o da HACS).
+Impostazioni → Dispositivi e servizi → Baizaman → Elimina, poi disinstallala dal Marketplace (o da HACS).
 
-## Sostieni Aurora Glass
-Aurora Glass è gratis e resterà gratis. La sviluppo nel tempo libero e provo ogni versione sul mio Home Assistant. Se ti è utile:
+## Sostieni Baizaman
+Baizaman è gratis e resterà gratis. La sviluppo nel tempo libero e provo ogni versione sul mio Home Assistant. Se ti è utile:
 
 - ⭐ **Metti una stella a questo repository**: è gratis e aiuta altre persone a trovarlo.
 - ☕ **[Offrimi un caffè su Ko-fi](https://ko-fi.com/domotikpro)**: una volta sola o ogni mese, con carta o PayPal.
 
-I contributi sono volontari: Aurora Glass è uguale per tutti.
+I contributi sono volontari: Baizaman è uguale per tutti.
 
 ## Licenza
 [GPL-3.0](LICENSE). Puoi usarla, studiarla, modificarla e condividerla, anche a scopo commerciale, purché ogni versione modificata che distribuisci resti GPL-3.0, abbia il codice sorgente e mantenga la nota originale: © 2026 DomotikPro.it (Luca Pinelli).
 
-Il nome "Aurora Glass" e il marchio DomotikPro.it non sono coperti dalla licenza: una versione modificata deve usare un nome diverso.
+Il nome "Baizaman" e il marchio DomotikPro.it non sono coperti dalla licenza: una versione modificata deve usare un nome diverso.
 
 ---
 Fatta da [DomotikPro.it](https://domotikpro.it/?utm_source=github&utm_medium=readme&utm_campaign=aurora-glass&utm_content=footer) — guide pratiche per una casa smart che funziona.

@@ -1,4 +1,4 @@
-"""Aurora Glass: la dashboard animata come pagina della barra laterale di Home Assistant.
+"""Baizaman: la dashboard animata come pagina della barra laterale di Home Assistant.
 
 Ogni voce dell'integrazione è una plancia: una pagina nella barra laterale con il nome
 scelto nella procedura guidata, che mostra la scheda aurora-v3-card con stanze, luci e
@@ -81,7 +81,7 @@ async def _async_register_panel(hass: HomeAssistant, entry: ConfigEntry) -> None
         config={"card": build_card_config(conf, entry.entry_id)},
         require_admin=False,
     )
-    _LOGGER.debug("Aurora Glass: pagina /%s registrata", url_path)
+    _LOGGER.debug("Baizaman: pagina /%s registrata", url_path)
 
 
 async def _async_updated(hass: HomeAssistant, entry: ConfigEntry) -> None:

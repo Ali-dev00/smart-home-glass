@@ -1,5 +1,5 @@
 /* ============================================================================
-   AURORA GLASS v3 — EFFETTI (meteo e atmosfera) disegnati su canvas.
+   BAIZAMAN v3 — EFFETTI (meteo e atmosfera) disegnati su canvas.
    Si possono sovrapporre a qualsiasi mondo: pioggia, temporale, neve, nebbia,
    foglie, petali, lucciole, stelle cadenti, fuochi d'artificio, bolle, coriandoli.
    ========================================================================== */

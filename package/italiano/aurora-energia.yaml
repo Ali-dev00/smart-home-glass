@@ -1,5 +1,5 @@
 # ============================================================================
-#  AURORA GLASS v3 - sensori per la vista Energia (facoltativo)
+#  BAIZAMAN v3 - sensori per la vista Energia (facoltativo)
 #  La scheda calcola gia' da sola i kWh di oggi, ieri, mese e anno dallo storico
 #  del contatore totale (energyTotal). Questo file serve solo se vuoi dei
 #  contatori veri: giornaliero / mensile / annuale, "ieri" e "mese scorso".

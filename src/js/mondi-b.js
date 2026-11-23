@@ -1,4 +1,4 @@
-/* AURORA GLASS v3 — MONDI (2/2): Spazio · Giappone · Cyberpunk · Natale · Oceano */
+/* BAIZAMAN v3 — MONDI (2/2): Spazio · Giappone · Cyberpunk · Natale · Oceano */
 (function () {
   var A = AR, W = AMB.W, H = AMB.H, f = A.f, mix = H.mix;
   var poly = H.poly, path = H.path, rect = H.rect, circ = H.circ, ell = H.ell, line = H.line, grp = H.grp, an = H.an, at = H.at, circA = H.circA, ellA = H.ellA,

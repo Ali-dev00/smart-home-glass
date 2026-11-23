@@ -1,4 +1,4 @@
-AURORA GLASS v3 per / for Home Assistant
+BAIZAMAN v3 per / for Home Assistant
 ========================================
 
 ITALIANO  -> apri la cartella  italiano  e leggi LEGGIMI.txt

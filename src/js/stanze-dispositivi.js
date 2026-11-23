@@ -1,5 +1,5 @@
 /* ============================================================================
-   AURORA GLASS v3 — «Stanze e dispositivi»
+   BAIZAMAN v3 — «Stanze e dispositivi»
    Finestra dentro la plancia per cambiare stanze, luci, sensori, climatizzatori,
    energia, sicurezza e scene senza rifare la procedura guidata.
    Legge e salva le opzioni dell'integrazione (aurora_glass/config e

@@ -1,11 +1,11 @@
 # ============================================================================
-#  AURORA GLASS v3 - full dashboard in YAML (method B in README)
+#  BAIZAMAN v3 - full dashboard in YAML (method B in README)
 #  How to use it: open the dashboard -> pencil -> menu (three dots) -> "Raw
 #  configuration editor" -> replace everything with this text -> Save.
 #  Then change room names and entities to match your home.
 #  Every option is explained in card-example.yaml.
 # ============================================================================
-title: Aurora
+title: Baizaman
 views:
   - title: Home
     path: home

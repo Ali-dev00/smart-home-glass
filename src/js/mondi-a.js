@@ -1,4 +1,4 @@
-/* AURORA GLASS v3 — MONDI (1/2): Casetta · Città · Montagna · Mare e faro · Foresta magica */
+/* BAIZAMAN v3 — MONDI (1/2): Casetta · Città · Montagna · Mare e faro · Foresta magica */
 (function () {
   var A = AR, W = AMB.W, H = AMB.H, f = A.f, mix = H.mix;
   var poly = H.poly, path = H.path, rect = H.rect, circ = H.circ, ell = H.ell, line = H.line, grp = H.grp, an = H.an, at = H.at, circA = H.circA, ellA = H.ellA, sky = H.sky, bird = H.bird, smoke = H.smoke, snow = H.snow;

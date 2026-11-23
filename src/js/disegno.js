@@ -1,5 +1,5 @@
 /* ============================================================================
-   AURORA GLASS v3 — motore di disegno delle immagini dei pulsanti
+   BAIZAMAN v3 — motore di disegno delle immagini dei pulsanti
    Ogni immagine è una funzione draw(on, t): t va da 0 a 1 e il ciclo si chiude
    da solo (così la GIF si ripete senza scatti). Lo usa tools/render_btn.py per
    produrre i file PNG (spento) e GIF (acceso) in assets/btn/.

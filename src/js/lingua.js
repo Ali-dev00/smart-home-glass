@@ -1,5 +1,5 @@
 /* ============================================================================
-   AURORA GLASS v3 — lingue
+   BAIZAMAN v3 — lingue
    Il codice è scritto in italiano: T("frase") restituisce la frase nella lingua
    scelta. {n}, {p}, ... vengono sostituiti con i valori passati: T("{n} luci", { n: 3 }).
    Per aggiungere una lingua basta un altro dizionario come EN.
@@ -110,7 +110,7 @@
     "Tariffa salvata in Home Assistant: {p}": "Tariff saved in Home Assistant: {p}", "serve un utente amministratore per salvarla in HA": "an administrator account is needed to save it in HA",
     "non sono riuscito a scriverla in HA": "it couldn't be written to HA", "Picco": "Peak", "alle": "at", "Media": "Average", "Linea tratteggiata = consumo di fondo": "Dashed line = baseline usage",
     "Costo giornaliero": "Daily cost", "Consumo giornaliero": "Daily usage", "Storico non disponibile": "History unavailable", "Totale": "Total", "Media al giorno": "Daily average",
-    "Calcolato con {p}": "Worked out at {p}", "Aurora Glass v3 · collegata a Home Assistant": "Aurora Glass v3 · connected to Home Assistant",
+    "Calcolato con {p}": "Worked out at {p}", "Baizaman v3 · collegata a Home Assistant": "Baizaman v3 · connected to Home Assistant",
     /* testi fissi della pagina */
     "Stile": "Style", "Cambia tema chiaro/scuro": "Switch light/dark theme", "Modalità modifica: tocca un pulsante per cambiargli immagine o GIF": "Edit mode: tap a button to change its image or GIF",
     "Fine": "Done", "Tocca scene e luci": "Tap scenes and lights", "Cambia mondo, effetti e ora": "Change world, effects and time", "Modifica le immagini": "Edit the images",
@@ -123,7 +123,7 @@
     "Giardino": "Garden", "Energia": "Energy", "Potenza adesso": "Power now", "Misura generale della casa": "Whole-house meter", "Andamento": "Trend", "Periodo": "Period",
     "3 ore": "3 hours", "24 ore": "24 hours", "7 giorni": "7 days", "Imposta la tariffa dell'energia": "Set the energy tariff", "Tariffa": "Tariff", "ultimi 14 giorni": "last 14 days",
     "Unità": "Unit", "kWh": "kWh", "Elettrodomestici": "Appliances", "consumo adesso e oggi": "power now and today",
-    "Aurora Glass v3 · anteprima: non riflette dati reali di un impianto.": "Aurora Glass v3 · preview: not real data from a home.",
+    "Baizaman v3 · anteprima: non riflette dati reali di un impianto.": "Baizaman v3 · preview: not real data from a home.",
     "Navigazione": "Navigation", "Spegni tutto": "All off", "Personalizza lo stile": "Customise the style", "Chiudi": "Close", "Mondo": "World",
     "10 paesaggi animati, tutti con alba, giorno, tramonto e notte": "10 animated landscapes, each with dawn, day, sunset and night",
     "Ora del giorno": "Time of day", "simula cielo e colori": "preview sky and colours", "Simula l'ora del giorno": "Preview the time of day", "Usa l'ora reale": "Use the real time",

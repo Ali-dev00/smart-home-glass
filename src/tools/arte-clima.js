@@ -1,4 +1,4 @@
-/* AURORA GLASS v3 — climatizzatore: una immagine per modalità (spento = PNG, le altre GIF animate) */
+/* BAIZAMAN v3 — climatizzatore: una immagine per modalità (spento = PNG, le altre GIF animate) */
 (function () {
   var A = AR, ART = A.ART;
   var R = A.R, C = A.C, E = A.E, P = A.P, PA = A.PA, ST = A.ST, Gr = A.Gr, glow = A.glow, lg = A.lg, rg = A.rg, hsl = A.hsl, sn = A.sn, fr = A.fr, f = A.f, roomBase = A.roomBase;

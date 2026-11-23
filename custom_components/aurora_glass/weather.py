@@ -166,7 +166,7 @@ class WeatherManager:
                 try:
                     data = parse_forecast(await self._request(FORECAST_URL, self._forecast_params()))
                 except WeatherError as err:
-                    _LOGGER.warning("Aurora Glass: meteo non disponibile (%s)", err)
+                    _LOGGER.warning("Baizaman: meteo non disponibile (%s)", err)
                     if self.forecast is None:
                         return {"status": "error", "city": self.city, "error": str(err)}
                     return self._answer("stale", error=str(err))

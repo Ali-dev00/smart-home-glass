@@ -1,4 +1,4 @@
-/* AURORA GLASS v3 — illustrazioni delle luci / stanze (spento = PNG, acceso = GIF animata) */
+/* BAIZAMAN v3 — illustrazioni delle luci / stanze (spento = PNG, acceso = GIF animata) */
 (function () {
   var A = AR, ART = A.ART;
   var R = A.R, C = A.C, E = A.E, P = A.P, PA = A.PA, ST = A.ST, Gr = A.Gr, glow = A.glow, blur = A.blur, cone = A.cone, motes = A.motes,

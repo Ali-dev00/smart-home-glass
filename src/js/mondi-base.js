@@ -1,5 +1,5 @@
 /* ============================================================================
-   AURORA GLASS v3 — MONDI: base comune
+   BAIZAMAN v3 — MONDI: base comune
    - palette continua per ogni ora del giorno (alba → giorno → tramonto → notte)
    - posizione di sole e luna lungo l'arco
    - cielo, stelle, nuvole, uccelli e piccoli helper SMIL riusati da tutti i mondi

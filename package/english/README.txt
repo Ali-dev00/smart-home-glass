@@ -1,4 +1,4 @@
-AURORA GLASS v3 for Home Assistant
+BAIZAMAN v3 for Home Assistant
 ==================================
 The animated dashboard: a sky that follows the time of day, 10 worlds, 11 weather
 effects, buttons made of images and GIFs, alarm, climate, cameras and energy with
@@ -12,7 +12,7 @@ METHOD A - GUIDED INSTALL (recommended)
 With HACS:
   1) HACS -> menu (three dots) -> Custom repositories
      Repository:  https://github.com/lucalux00/aurora-glass    Type: Integration
-  2) Search "Aurora Glass" -> Download.
+  2) Search "Baizaman" -> Download.
   3) Restart Home Assistant (Settings -> System -> top-right menu -> Restart).
 
 Without HACS:
@@ -23,10 +23,10 @@ Without HACS:
 
 After the restart:
   4) Home Assistant finds it by itself: a notification appears and at the top of
-     Settings -> Devices & services "Aurora Glass" is listed as discovered.
+     Settings -> Devices & services "Baizaman" is listed as discovered.
      Press "Add".
      (Don't see it? Settings -> Devices & services -> Add integration -> search
-     "Aurora Glass".)
+     "Baizaman".)
   5) The wizard asks, one screen at a time:
        - the dashboard name, icon and language (automatic, English, Italian)
        - your rooms: it suggests the Home Assistant areas that have lights. For each
@@ -40,7 +40,7 @@ After the restart:
        - what the Good morning, Cinema and Dinner scenes turn on
   6) Done: the sidebar shows an entry with the name you picked. Open it.
 
-To change something later: Settings -> Devices & services -> Aurora Glass -> Configure
+To change something later: Settings -> Devices & services -> Baizaman -> Configure
 (name and language, rooms, devices, scenes). The dashboard updates by itself.
 Want more dashboards (for example one for the bedroom tablet)? Add service.
 
@@ -55,7 +55,7 @@ METHOD B - BY HAND WITH YAML
      Add resource.  URL: /local/aurora-v3/aurora-v3.js?v=1   Type: JavaScript module
      (when you update the card, raise the number after ?v=)
   3) CREATE THE DASHBOARD: Settings -> Dashboards -> Add dashboard -> New dashboard from
-     scratch. Title "Aurora", icon mdi:home-heart, "Show in sidebar".
+     scratch. Title "Baizaman", icon mdi:home-heart, "Show in sidebar".
   4) PASTE THE CARD: open the dashboard -> pencil -> menu -> "Raw configuration editor"
      -> delete everything, paste  dashboard-example.yaml  -> Save.
   5) YOUR ROOMS: in dashboard-example.yaml change the  rooms:  section with your room
@@ -79,11 +79,11 @@ PRIVACY
  No data is collected or sent anywhere.
 
 REMOVE
- Method A: Settings -> Devices & services -> Aurora Glass -> Delete, then remove the
+ Method A: Settings -> Devices & services -> Baizaman -> Delete, then remove the
  integration from HACS (or the folder custom_components/aurora_glass).
  Method B: delete the dashboard, the resource and the folder www/aurora-v3.
 
 GPL-3.0 licence: you can use, modify and share the card, commercially too, as long as
 modified versions stay GPL-3.0, ship their source code and use a name other than
-"Aurora Glass". See LICENSE.
+"Baizaman". See LICENSE.
 (c) 2026 DomotikPro.it (Luca Pinelli) - https://domotikpro.it/progetti/aurora-glass-v3

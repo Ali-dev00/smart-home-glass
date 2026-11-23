@@ -181,7 +181,7 @@
       },
       "packs": {
         "title": "Packs",
-        "description": "{status}\n\nTick a pack to download and enable it, untick it to remove it. Packs are optional: Baizaman Smart Home works the same without them. A pack adds features to every Aurora dashboard (for example an extra view in the dock).\n\n[Discover the packs on domotikpro.it]({packs_url})",
+        "description": "{status}\n\nTick a pack to download and enable it, untick it to remove it. Packs are optional: Baizaman Smart Home works the same without them. A pack adds features to every Baizaman dashboard (for example an extra view in the dock).\n\n[Discover the packs on domotikpro.it]({packs_url})",
         "data": {
           "packs": "Packs"
         }

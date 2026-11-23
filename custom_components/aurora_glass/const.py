@@ -1,4 +1,4 @@
-"""Costanti dell'integrazione Aurora Glass."""
+"""Costanti dell'integrazione Baizaman."""
 
 DOMAIN = "aurora_glass"
 VERSION = "3.8.2"

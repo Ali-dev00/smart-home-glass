@@ -1,9 +1,9 @@
 /* ============================================================================
-   AURORA GLASS — presa per i pacchetti
+   BAIZAMAN — presa per i pacchetti
    Un pacchetto è un file JS che si registra così (anche prima che la scheda sia caricata):
 
      (window.AuroraGlassPacks = window.AuroraGlassPacks || []).push({
-       id: "regia", name: "Regia", version: "1.0.0", glass: "3.3.0",   // glass = versione minima di Aurora Glass
+       id: "regia", name: "Regia", version: "1.0.0", glass: "3.3.0",   // glass = versione minima di Baizaman
        css: "...",                                                       // facoltativo, :root diventa :host dentro HA
        mount: function (api) { ...; return { hass: fn(h), show: fn(view), destroy: fn() }; }
      });
@@ -56,20 +56,20 @@
     function mount(p) {
       if (!p || !p.id || mounted[p.id] || typeof p.mount !== "function") return;
       if (p.glass && !atLeast(opts.version, p.glass)) {
-        console.warn("Aurora Glass: il pacchetto «" + (p.name || p.id) + "» richiede Aurora Glass " + p.glass + " o più recente (questa è " + opts.version + ")");
+        console.warn("Baizaman: il pacchetto «" + (p.name || p.id) + "» richiede Baizaman " + p.glass + " o più recente (questa è " + opts.version + ")");
         return;
       }
       mounted[p.id] = true;
       var style = addCss(opts.root, opts.embedded, p.id, p.css), h = null;
       try { h = p.mount(opts.makeApi(p)) || {}; }
-      catch (e) { console.error("Aurora Glass: errore nel pacchetto «" + (p.name || p.id) + "»", e); h = {}; }
+      catch (e) { console.error("Baizaman: errore nel pacchetto «" + (p.name || p.id) + "»", e); h = {}; }
       h.__style = style; h.__id = p.id;
       handles.push(h);
       if (opts.hass && h.hass) try { h.hass(opts.hass()); } catch (e) { console.error(e); }
     }
     list.forEach(mount);
     hosts.push(mount);
-    function each(fn) { handles.forEach(function (h) { try { fn(h); } catch (e) { console.error("Aurora Glass: errore nel pacchetto «" + h.__id + "»", e); } }); }
+    function each(fn) { handles.forEach(function (h) { try { fn(h); } catch (e) { console.error("Baizaman: errore nel pacchetto «" + h.__id + "»", e); } }); }
     return {
       list: function () { return Object.keys(mounted); },
       hass: function (hs) { each(function (h) { if (h.hass) h.hass(hs); }); },
